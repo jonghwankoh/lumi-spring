@@ -5,8 +5,11 @@ import com.jonghwan.typing.repository.ParagraphRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -14,9 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class ParagraphController {
     private final ParagraphRepository repository;
 
+    @GetMapping("/paragraph/{id}")
+    public Optional<Paragraph> getParagraphById(@PathVariable Long id) {
+        log.info("repository.findById(id)");
+        return repository.findById(id);
+    }
+
     @GetMapping("/paragraph/random")
-    public Paragraph getRandomParagraph(@RequestParam Long nonce) {
-        log.info("repository.findByNonce(nonce)");
-        return repository.findByNonce(nonce);
+    public Optional<Paragraph> getRandomParagraph() {
+        log.info("repository.findAny()");
+        return repository.findAny();
     }
 }

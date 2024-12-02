@@ -5,10 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface ParagraphRepository extends JpaRepository<Paragraph, Long> {
     @Query(value = """
         SELECT * FROM PARAGRAPH
-        WHERE id = MOD(:nonce, (SELECT COUNT(*) FROM PARAGRAPH)) + 1
+        ORDER BY RAND()
+        LIMIT 1;
         """, nativeQuery = true)
-    Paragraph findByNonce(@Param("nonce") long nonce);
+    Optional<Paragraph> findAny();
 }
