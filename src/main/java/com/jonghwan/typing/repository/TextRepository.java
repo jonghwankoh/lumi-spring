@@ -1,17 +1,16 @@
 package com.jonghwan.typing.repository;
 
-import com.jonghwan.typing.entity.Paragraph;
+import com.jonghwan.typing.entity.Text;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface ParagraphRepository extends JpaRepository<Paragraph, Long> {
+public interface TextRepository extends JpaRepository<Text, Long> {
     @Query(value = """
-        SELECT * FROM PARAGRAPH
+        SELECT * FROM TEXT
         ORDER BY RAND()
         LIMIT 1;
         """, nativeQuery = true)
-    Optional<Paragraph> findAny();
+    Optional<Text> findAny();
 }
