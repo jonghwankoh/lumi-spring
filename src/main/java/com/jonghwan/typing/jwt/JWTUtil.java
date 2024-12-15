@@ -13,7 +13,7 @@ import java.util.Date;
 public class JWTUtil {
     public SecretKey secretKey;
 
-    public JWTUtil(@Value("${spring.jwt.secret")String secret) {
+    public JWTUtil(@Value("${spring.jwt.secret}")String secret) {
         this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharset.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
 

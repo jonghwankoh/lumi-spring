@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Slf4j
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
@@ -27,6 +29,13 @@ public class JWTFilter extends OncePerRequestFilter {
         String token = null;
 
         Cookie[] cookies = request.getCookies();
+
+        if(cookies == null) {
+            log.info("No cookies");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("Authorization")) {
                 token = cookie.getValue();
@@ -34,11 +43,11 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         if (token == null) {
-            System.out.println("token null");
+            log.info("token null");
             filterChain.doFilter(request, response);
             return;
         } else if (jwtUtil.isExpired(token)) {
-            System.out.println("token expired");
+            log.info("token expired");
             return;
         }
 

@@ -62,7 +62,8 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         httpSecurity
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/text/{id}", "/text/random").permitAll()
+                        .requestMatchers("/my").authenticated()
                         .anyRequest().authenticated());
 
         // oauth2UserService 등록

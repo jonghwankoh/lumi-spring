@@ -21,8 +21,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        System.out.println("oAuth2User = " + oAuth2User);
-
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
         OAuth2Response oAuth2Response = null;
@@ -50,13 +48,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // 이메일, 이름 등록 및 업데이트
         updateUser.setName(oAuth2Response.getName());
         updateUser.setEmail(oAuth2Response.getEmail());
-        userRepository.save(updateUser);
+        UserEntity savedUser = userRepository.save(updateUser);
 
         // 유저정보 반환
         UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(updateUser.getUsername());
-        userDTO.setName(updateUser.getName());
-        userDTO.setRole(updateUser.getRole());
+        userDTO.setUsername(savedUser.getUsername());
+        userDTO.setName(savedUser.getName());
+        userDTO.setRole(savedUser.getRole());
         return new CustomOAuth2User(userDTO);
     }
 }
