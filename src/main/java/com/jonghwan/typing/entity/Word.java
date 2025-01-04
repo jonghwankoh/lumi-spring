@@ -15,6 +15,10 @@ public class Word {
     private Long id;
     private String word;
     private String meaning;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

@@ -1,7 +1,7 @@
 package com.jonghwan.typing.service;
 
 import com.jonghwan.typing.dto.*;
-import com.jonghwan.typing.entity.UserEntity;
+import com.jonghwan.typing.entity.User;
 import com.jonghwan.typing.repository.UserRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -33,12 +33,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
 
         // DB 조회/저장
-        UserEntity findUser = userRepository.findByUsername(username);
+        User findUser = userRepository.findByUsername(username);
 
-        UserEntity updateUser;
+        User updateUser;
         if (findUser == null) {
             // 회원가입
-            updateUser = new UserEntity();
+            updateUser = new User();
             updateUser.setUsername(username);
             updateUser.setRole("ROLE_USER");
         } else {
@@ -48,7 +48,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // 이메일, 이름 등록 및 업데이트
         updateUser.setName(oAuth2Response.getName());
         updateUser.setEmail(oAuth2Response.getEmail());
-        UserEntity savedUser = userRepository.save(updateUser);
+        User savedUser = userRepository.save(updateUser);
 
         // 유저정보 반환
         UserDTO userDTO = new UserDTO();

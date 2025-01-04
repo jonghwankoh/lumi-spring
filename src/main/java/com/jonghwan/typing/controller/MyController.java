@@ -2,7 +2,7 @@ package com.jonghwan.typing.controller;
 
 import com.jonghwan.typing.dto.CustomOAuth2User;
 import com.jonghwan.typing.dto.MyDTO;
-import com.jonghwan.typing.entity.UserEntity;
+import com.jonghwan.typing.entity.User;
 import com.jonghwan.typing.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class MyController {
         }
         if (auth.getPrincipal() instanceof CustomOAuth2User customUser) {
             MyDTO myDTO = new MyDTO();
-            UserEntity user = userRepository.findByUsername(customUser.getUsername());
+            User user = userRepository.findByUsername(customUser.getUsername());
             myDTO.setEmail(user.getEmail());
             myDTO.setName(user.getName());
             myDTO.setRole(user.getRole());
