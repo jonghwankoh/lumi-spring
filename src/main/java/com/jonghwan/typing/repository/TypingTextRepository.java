@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface TextRepository extends JpaRepository<TypingText, Long> {
+public interface TypingTextRepository extends JpaRepository<TypingText, Long> {
     @Query(value = """
         SELECT * FROM TYPING_TEXT
         ORDER BY RAND()
