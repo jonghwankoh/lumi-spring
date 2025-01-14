@@ -1,8 +1,8 @@
 package com.jonghwan.typing.service;
 
 import com.jonghwan.typing.dto.*;
-import com.jonghwan.typing.entity.User;
-import com.jonghwan.typing.repository.UserRepository;
+import com.jonghwan.typing.entity.Member;
+import com.jonghwan.typing.repository.MemberRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
-    public CustomOAuth2UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public CustomOAuth2UserService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -33,28 +33,28 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
 
         // DB 조회/저장
-        User findUser = userRepository.findByUsername(username);
+        Member findMember = memberRepository.findByUsername(username);
 
-        User updateUser;
-        if (findUser == null) {
+        Member updateMember;
+        if (findMember == null) {
             // 회원가입
-            updateUser = new User();
-            updateUser.setUsername(username);
-            updateUser.setRole("ROLE_USER");
+            updateMember = new Member();
+            updateMember.setUsername(username);
+            updateMember.setRole("ROLE_USER");
         } else {
             // 기존 로그인
-            updateUser = findUser;
+            updateMember = findMember;
         }
         // 이메일, 이름 등록 및 업데이트
-        updateUser.setName(oAuth2Response.getName());
-        updateUser.setEmail(oAuth2Response.getEmail());
-        User savedUser = userRepository.save(updateUser);
+        updateMember.setName(oAuth2Response.getName());
+        updateMember.setEmail(oAuth2Response.getEmail());
+        Member savedMember = memberRepository.save(updateMember);
 
         // 유저정보 반환
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(savedUser.getUsername());
-        userDTO.setName(savedUser.getName());
-        userDTO.setRole(savedUser.getRole());
-        return new CustomOAuth2User(userDTO);
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setUsername(savedMember.getUsername());
+        memberDTO.setName(savedMember.getName());
+        memberDTO.setRole(savedMember.getRole());
+        return new CustomOAuth2User(memberDTO);
     }
 }

@@ -6,20 +6,27 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
-public class User {
+@Entity
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String role;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @PrePersist

@@ -1,4 +1,4 @@
-package com.jonghwan.typing.entity;
+package com.jonghwan.typing.entity.vocab;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,15 +6,18 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
-public class Word {
+@Entity
+public class Vocab {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String word;
-    private String meaning;
+
+    @Column(nullable = false)
+    private String vocabText;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @PrePersist

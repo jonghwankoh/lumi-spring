@@ -1,7 +1,7 @@
 package com.jonghwan.typing.controller;
 
 import com.jonghwan.typing.entity.TypingText;
-import com.jonghwan.typing.repository.TextRepository;
+import com.jonghwan.typing.repository.TypingTextRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 public class TextController {
-    private final TextRepository repository;
+    private final TypingTextRepository repository;
 
     @GetMapping("/text/{id}")
     public Optional<TypingText> getTextById(@PathVariable Long id) {

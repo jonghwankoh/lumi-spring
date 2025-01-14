@@ -1,7 +1,7 @@
 package com.jonghwan.typing.jwt;
 
 import com.jonghwan.typing.dto.CustomOAuth2User;
-import com.jonghwan.typing.dto.UserDTO;
+import com.jonghwan.typing.dto.MemberDTO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -55,10 +55,10 @@ public class JWTFilter extends OncePerRequestFilter {
         String role = jwtUtil.getRole(token);
 
         // UsernamePasswordAuthenticationToken 생성
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(username);
-        userDTO.setRole(role);
-        CustomOAuth2User details = new CustomOAuth2User(userDTO);
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setUsername(username);
+        memberDTO.setRole(role);
+        CustomOAuth2User details = new CustomOAuth2User(memberDTO);
         Authentication authToken = new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
 
         // 세션에 인증정보 등록

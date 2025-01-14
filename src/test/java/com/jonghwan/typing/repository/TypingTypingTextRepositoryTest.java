@@ -13,12 +13,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 @Transactional
 @SpringBootTest
-class TypingTextRepositoryTest {
+class TypingTypingTextRepositoryTest {
     private TypingText sample1;
     private TypingText sample2;
 
     @Autowired
-    private TextRepository textRepository;
+    private TypingTextRepository typingTextRepository;
 
     @BeforeEach
     void setUp() {
@@ -30,15 +30,15 @@ class TypingTextRepositoryTest {
         sample2.setTitle("Another Title");
         sample2.setContent("Another Content");
 
-        textRepository.save(sample1);
-        textRepository.save(sample2);
+        typingTextRepository.save(sample1);
+        typingTextRepository.save(sample2);
     }
 
 
     @Test
     void getRandom() {
         for (int i = 0; i < 5; i++) {
-            TypingText findTypingText = textRepository.findAny().orElseThrow();
+            TypingText findTypingText = typingTextRepository.findAny().orElseThrow();
 
             log.info("id = {}", findTypingText.getId());
             log.info("title = {}", findTypingText.getTitle());
@@ -49,12 +49,12 @@ class TypingTextRepositoryTest {
 
     @Test
     void getById() {
-        TypingText find1 = textRepository.findById(sample1.getId()).orElseThrow();
+        TypingText find1 = typingTextRepository.findById(sample1.getId()).orElseThrow();
 
         assertThat(find1.getTitle()).isEqualTo(sample1.getTitle());
         assertThat(find1.getContent()).isEqualTo(sample1.getContent());
 
-        TypingText find2 = textRepository.findById(sample2.getId()).orElseThrow();
+        TypingText find2 = typingTextRepository.findById(sample2.getId()).orElseThrow();
 
         assertThat(find2.getTitle()).isEqualTo(sample2.getTitle());
         assertThat(find2.getContent()).isEqualTo(sample2.getContent());
