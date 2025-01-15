@@ -1,4 +1,4 @@
-package com.jonghwan.typing.dto;
+package com.jonghwan.typing.security.dto;
 
 public interface OAuth2Response {
     //제공자 (Ex. naver, google, ...)

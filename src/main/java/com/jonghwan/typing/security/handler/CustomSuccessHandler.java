@@ -1,7 +1,7 @@
-package com.jonghwan.typing.oauth2;
+package com.jonghwan.typing.security.handler;
 
-import com.jonghwan.typing.dto.CustomOAuth2User;
-import com.jonghwan.typing.jwt.JWTUtil;
+import com.jonghwan.typing.security.dto.CustomOAuth2User;
+import com.jonghwan.typing.security.jwt.JWTUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

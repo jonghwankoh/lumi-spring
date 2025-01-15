@@ -2,7 +2,7 @@ package com.jonghwan.typing.controller;
 
 import com.jonghwan.typing.dto.MyDTO;
 import com.jonghwan.typing.entity.Member;
-import com.jonghwan.typing.service.AuthService;
+import com.jonghwan.typing.security.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

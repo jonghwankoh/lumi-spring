@@ -1,8 +1,11 @@
-package com.jonghwan.typing.service;
+package com.jonghwan.typing.security.oauth2;
 
-import com.jonghwan.typing.dto.*;
 import com.jonghwan.typing.entity.Member;
 import com.jonghwan.typing.repository.MemberRepository;
+import com.jonghwan.typing.security.dto.CustomOAuth2User;
+import com.jonghwan.typing.security.dto.GoogleResponse;
+import com.jonghwan.typing.security.dto.AuthUserDTO;
+import com.jonghwan.typing.security.dto.OAuth2Response;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -53,10 +56,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         Member savedMember = memberRepository.save(updateMember);
 
         // 유저정보 반환
-        MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setUsername(savedMember.getUsername());
-        memberDTO.setName(savedMember.getName());
-        memberDTO.setRole(savedMember.getRole());
-        return new CustomOAuth2User(memberDTO);
+        AuthUserDTO authUserDTO = new AuthUserDTO();
+        authUserDTO.setUsername(savedMember.getUsername());
+        authUserDTO.setName(savedMember.getName());
+        authUserDTO.setRole(savedMember.getRole());
+        return new CustomOAuth2User(authUserDTO);
     }
 }

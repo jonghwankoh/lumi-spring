@@ -1,9 +1,10 @@
-package com.jonghwan.typing.config;
+package com.jonghwan.typing.security.config;
 
-import com.jonghwan.typing.jwt.JWTFilter;
-import com.jonghwan.typing.jwt.JWTUtil;
-import com.jonghwan.typing.oauth2.CustomSuccessHandler;
-import com.jonghwan.typing.service.CustomOAuth2UserService;
+import com.jonghwan.typing.security.jwt.JWTFilter;
+import com.jonghwan.typing.security.jwt.JWTUtil;
+import com.jonghwan.typing.security.handler.CustomSuccessHandler;
+import com.jonghwan.typing.security.handler.UnauthorizedEntryPoint;
+import com.jonghwan.typing.security.oauth2.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,11 +25,13 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
     private final JWTUtil jwtUtil;
+    private final UnauthorizedEntryPoint unauthorizedEntryPoint;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil) {
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil, UnauthorizedEntryPoint unauthorizedEntryPoint) {
         this.customOAuth2UserService = customOAuth2UserService;
         this.customSuccessHandler = customSuccessHandler;
         this.jwtUtil = jwtUtil;
+        this.unauthorizedEntryPoint = unauthorizedEntryPoint;
     }
 
     @Bean
@@ -65,6 +68,8 @@ public class SecurityConfig {
                         .requestMatchers("/text/{id}", "/text/random", "/api-docs").permitAll()
                         .requestMatchers("/my").authenticated()
                         .anyRequest().authenticated());
+
+        httpSecurity.exceptionHandling((exception) -> exception.authenticationEntryPoint(unauthorizedEntryPoint));
 
         // oauth2UserService 등록
         httpSecurity

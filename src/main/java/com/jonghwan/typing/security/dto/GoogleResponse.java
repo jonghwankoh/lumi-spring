@@ -1,4 +1,4 @@
-package com.jonghwan.typing.dto;
+package com.jonghwan.typing.security.dto;
 
 import java.util.Map;
 

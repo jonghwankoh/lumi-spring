@@ -1,7 +1,5 @@
-package com.jonghwan.typing.jwt;
+package com.jonghwan.typing.security.jwt;
 
-import com.jonghwan.typing.dto.CustomOAuth2User;
-import com.jonghwan.typing.dto.MemberDTO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -26,44 +24,33 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = null;
-
-        Cookie[] cookies = request.getCookies();
-
-        if(cookies == null) {
-            log.info("No cookies");
-            filterChain.doFilter(request, response);
-            return;
+        String jwt = getJWTFromCookies(request);
+        log.info("JWT: {}", jwt);
+        if (jwt == null) {
+            log.info("jwt not exist");
+        } else if (jwtUtil.isExpired(jwt)) {
+            log.info("jwt expired");
+        } else {
+            setAuthToken(jwt);
         }
+        filterChain.doFilter(request, response);
+    }
+
+    private static String getJWTFromCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
 
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("Authorization")) {
-                token = cookie.getValue();
+                return cookie.getValue();
             }
         }
+        return null;
+    }
 
-        if (token == null) {
-            log.info("token null");
-            filterChain.doFilter(request, response);
-            return;
-        } else if (jwtUtil.isExpired(token)) {
-            log.info("token expired");
-            return;
-        }
+    private void setAuthToken(String token) {
+        JwtUserDetails userDetails = new JwtUserDetails(jwtUtil.getUsername(token), jwtUtil.getRole(token));
 
-        String username = jwtUtil.getUsername(token);
-        String role = jwtUtil.getRole(token);
-
-        // UsernamePasswordAuthenticationToken 생성
-        MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setUsername(username);
-        memberDTO.setRole(role);
-        CustomOAuth2User details = new CustomOAuth2User(memberDTO);
-        Authentication authToken = new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
-
-        // 세션에 인증정보 등록
+        Authentication authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);
-
-        filterChain.doFilter(request, response);
     }
 }

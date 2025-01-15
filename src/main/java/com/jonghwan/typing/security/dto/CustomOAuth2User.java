@@ -1,4 +1,4 @@
-package com.jonghwan.typing.dto;
+package com.jonghwan.typing.security.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -8,10 +8,10 @@ import java.util.Collection;
 import java.util.Map;
 
 public class CustomOAuth2User implements OAuth2User {
-    private final MemberDTO memberDTO;
+    private final AuthUserDTO authUserDTO;
 
-    public CustomOAuth2User(MemberDTO memberDTO) {
-        this.memberDTO = memberDTO;
+    public CustomOAuth2User(AuthUserDTO authUserDTO) {
+        this.authUserDTO = authUserDTO;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class CustomOAuth2User implements OAuth2User {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return memberDTO.getRole();
+                return authUserDTO.getRole();
             }
         });
 
@@ -34,10 +34,10 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        return memberDTO.getName();
+        return authUserDTO.getName();
     }
 
     public String getUsername() {
-        return memberDTO.getUsername();
+        return authUserDTO.getUsername();
     }
 }

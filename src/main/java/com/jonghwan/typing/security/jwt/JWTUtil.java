@@ -1,4 +1,4 @@
-package com.jonghwan.typing.jwt;
+package com.jonghwan.typing.security.jwt;
 
 import com.nimbusds.jose.util.StandardCharset;
 import io.jsonwebtoken.Jwts;
