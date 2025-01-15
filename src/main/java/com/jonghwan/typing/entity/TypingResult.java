@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-public class TypingResult {
+public class TypingResult extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,11 +35,8 @@ public class TypingResult {
     private int cpm;
 
     @Column(columnDefinition = "json", nullable = false)
-    private String elapsedMsPerLetter;
-
-    @Column(columnDefinition = "json", nullable = false)
     private String matchPerLetter;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(columnDefinition = "json", nullable = false)
+    private String elapsedMsPerLetter;
 }

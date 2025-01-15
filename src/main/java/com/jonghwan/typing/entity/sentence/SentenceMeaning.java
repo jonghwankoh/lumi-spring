@@ -1,5 +1,6 @@
 package com.jonghwan.typing.entity.sentence;
 
+import com.jonghwan.typing.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-public class SentenceMeaning {
+public class SentenceMeaning extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +20,4 @@ public class SentenceMeaning {
 
     @Column(nullable = false)
     private String translation;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
 }

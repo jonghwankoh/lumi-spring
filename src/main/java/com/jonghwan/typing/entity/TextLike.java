@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-public class TextLike {
+public class TextLike extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +21,4 @@ public class TextLike {
     @ManyToOne
     @JoinColumn(name = "text_id", nullable = false)
     private TypingText typingText;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
 }

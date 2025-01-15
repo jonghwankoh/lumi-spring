@@ -1,5 +1,6 @@
 package com.jonghwan.typing.entity.vocab;
 
+import com.jonghwan.typing.entity.BaseEntity;
 import com.jonghwan.typing.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-public class VocabMeaning {
+public class VocabMeaning extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,12 +26,4 @@ public class VocabMeaning {
     @ManyToOne
     @JoinColumn(name="editor_id", nullable = true)
     private Member editor;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
 }

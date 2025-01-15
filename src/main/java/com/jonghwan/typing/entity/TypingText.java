@@ -5,13 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Check;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @Entity
-@Check(constraints = "content REGEXP '^[\\\\ \\sa-zA-Z0-9{}\\[\\]/?.,;:|()*~`!^\\-_+<>@#$%&=\\'\"]*$'")
-public class TypingText {
+@Check(constraints = "content REGEXP '^[ A-Za-z0-9{}\\\\[\\\\]?.,;:|()*~`!^\\\\-_+<>@#$%&=\\'\\\"]*$'")
+public class TypingText extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,15 +20,7 @@ public class TypingText {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
     @ManyToOne
-    @JoinColumn(name = "editor_id", nullable = true)
-    private Member member;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
+    @JoinColumn(name = "author_id", nullable = true)
+    private Member author;
 }
