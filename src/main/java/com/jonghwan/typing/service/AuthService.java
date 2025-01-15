@@ -22,6 +22,8 @@ public class AuthService {
         if (auth == null || !auth.isAuthenticated() || !(auth.getPrincipal() instanceof CustomOAuth2User oAuth2User)) {
             throw new IllegalStateException("Unauthorized access or invalid authentication.");
         }
-        return memberRepository.findByUsername(oAuth2User.getUsername());
+
+        return memberRepository.findByUsername(oAuth2User.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found for the given token"));
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final MemberRepository memberRepository;
@@ -23,7 +25,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
-        OAuth2Response oAuth2Response = null;
+        OAuth2Response oAuth2Response;
         if (registrationId.equals("google")) {
             oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
         } else {
@@ -33,17 +35,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
 
         // DB 조회/저장
-        Member findMember = memberRepository.findByUsername(username);
+        Optional<Member> findMember = memberRepository.findByUsername(username);
 
         Member updateMember;
-        if (findMember == null) {
+        if (findMember.isEmpty()) {
             // 회원가입
             updateMember = new Member();
             updateMember.setUsername(username);
             updateMember.setRole("ROLE_USER");
         } else {
             // 기존 로그인
-            updateMember = findMember;
+            updateMember = findMember.get();
         }
         // 이메일, 이름 등록 및 업데이트
         updateMember.setName(oAuth2Response.getName());

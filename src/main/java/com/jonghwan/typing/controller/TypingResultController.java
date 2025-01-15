@@ -37,10 +37,21 @@ public class TypingResultController {
         return new PostResponse(true, "Typing result have been saved. id = " + typingResult.getId());
     }
 
+    @GetMapping("/my")
+    public ResultFetchResponse fetchMyTypingResult() throws JsonProcessingException {
+        Member member = authService.getCurrentAuthenticatedUser();
+        List<TypingResult> results = typingResultRepository.findByMemberId(member.getId());
+        if(results.isEmpty()) {
+            throw new RuntimeException("No typingResult exists");
+        }
+
+        return entityToResponse(results.get(0));
+    }
+
     @GetMapping("/latest")
     public ResultFetchResponse fetchRecentTypingResult(@RequestParam Long textId) throws JsonProcessingException {
         Member member = authService.getCurrentAuthenticatedUser();
-        List<TypingResult> results = typingResultRepository.findByUserAndTypingTextOrdered(member.getId(), textId);
+        List<TypingResult> results = typingResultRepository.findByMemberAndTypingTextOrdered(member.getId(), textId);
         if(results.isEmpty()) {
             throw new RuntimeException("No typingResult exists");
         }

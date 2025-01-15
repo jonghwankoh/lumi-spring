@@ -9,8 +9,10 @@ import java.util.List;
 
 public interface TypingResultRepository extends JpaRepository<TypingResult, Long> {
     @Query("select r from TypingResult r where r.member.id = :memberId and r.typingText.id = :textId order by r.createdAt desc")
-    List<TypingResult> findByUserAndTypingTextOrdered(@Param("memberId") Long userId, @Param("textId") Long textId);
+    List<TypingResult> findByMemberAndTypingTextOrdered(@Param("memberId") Long memberId, @Param("textId") Long textId);
+
+    List<TypingResult> findByMemberId(Long memberId);
 
     //TODO: findTopByUserIdAndResourceBIdOrderByCreatedAtDesc 검토(chat gpt 피셜)
-    //Optional<TypingResult> findTopByUserIdAndTextIdOrderByCreatedAtDesc(Long userId, Long textId);
+    //Optional<TypingResult> findTopByMemberIdAndTextIdOrderByCreatedAtDesc(Long memberId, Long textId);
 }
