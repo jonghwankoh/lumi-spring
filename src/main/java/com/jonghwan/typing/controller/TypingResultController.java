@@ -80,10 +80,10 @@ public class TypingResultController {
         ObjectMapper objectMapper = new ObjectMapper();
         CollectionType booleanListType = objectMapper.getTypeFactory().constructCollectionType(List.class, Boolean.class);
         CollectionType integerListType = objectMapper.getTypeFactory().constructCollectionType(List.class, Integer.class);
-        List<Integer> elapsedTimePerLetter = objectMapper.readValue(typingResult.getElapsedMsPerLetter(), integerListType);
-        List<Boolean> matchPerLetter = objectMapper.readValue(typingResult.getMatchPerLetter(), booleanListType);
-        response.setElapsedMsPerLetter(elapsedTimePerLetter);
-        response.setMatchPerLetter(matchPerLetter);
+        List<Integer> elapsedTimePerLetter = objectMapper.readValue(typingResult.getElapsedMsPerChar(), integerListType);
+        List<Boolean> matchPerChar = objectMapper.readValue(typingResult.getMatchPerChar(), booleanListType);
+        response.setElapsedMsPerChar(elapsedTimePerLetter);
+        response.setMatchPerChar(matchPerChar);
 
         return response;
     }
@@ -102,11 +102,11 @@ public class TypingResultController {
         typingResult.setCpm(request.getCpm());
 
         // TODO: 저장: json(client) -> list(JPA) -> String(DB)
-        List<Boolean> matchPerLetter = request.getMatchPerLetter();
-        List<Integer> elapsedMsPerLetter = request.getElapsedMsPerLetter();
+        List<Boolean> matchPerChar = request.getMatchPerChar();
+        List<Integer> elapsedMsPerChar = request.getElapsedMsPerChar();
         ObjectMapper objectMapper = new ObjectMapper();
-        typingResult.setMatchPerLetter(objectMapper.writeValueAsString(matchPerLetter));
-        typingResult.setElapsedMsPerLetter(objectMapper.writeValueAsString(elapsedMsPerLetter));
+        typingResult.setMatchPerChar(objectMapper.writeValueAsString(matchPerChar));
+        typingResult.setElapsedMsPerChar(objectMapper.writeValueAsString(elapsedMsPerChar));
 
         return typingResult;
     }

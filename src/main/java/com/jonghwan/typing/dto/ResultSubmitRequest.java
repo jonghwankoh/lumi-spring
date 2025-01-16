@@ -14,6 +14,6 @@ public class ResultSubmitRequest {
     private int elapsedMs;
     private int cpm;
 
-    private List<Boolean> matchPerLetter;
-    private List<Integer> elapsedMsPerLetter;
+    private List<Boolean> matchPerChar;
+    private List<Integer> elapsedMsPerChar;
 }

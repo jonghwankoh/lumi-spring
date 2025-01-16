@@ -35,8 +35,8 @@ public class TypingResult extends BaseEntity {
     private int cpm;
 
     @Column(columnDefinition = "json", nullable = false)
-    private String matchPerLetter;
+    private String matchPerChar;
 
     @Column(columnDefinition = "json", nullable = false)
-    private String elapsedMsPerLetter;
+    private String elapsedMsPerChar;
 }
