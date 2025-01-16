@@ -34,7 +34,7 @@ public class TypingResultController {
         TypingResult typingResult = requestToEntity(request, member);
         typingResultRepository.save(typingResult);
 
-        return new PostResponse(true, "Typing result have been saved. id = " + typingResult.getId());
+        return new PostResponse(true, "Typing result have been saved.", typingResult.getId());
     }
 
     @GetMapping("/my")

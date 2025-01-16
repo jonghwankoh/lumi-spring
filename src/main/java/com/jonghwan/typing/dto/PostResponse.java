@@ -8,9 +8,11 @@ import lombok.Setter;
 public class PostResponse {
     private boolean success;
     private String message;
+    private Long resourceId;
 
-    public PostResponse(boolean success, String message) {
+    public PostResponse(boolean success, String message, Long resourceId) {
         this.success = success;
+        this.resourceId = resourceId;
         this.message = message;
     }
 }
