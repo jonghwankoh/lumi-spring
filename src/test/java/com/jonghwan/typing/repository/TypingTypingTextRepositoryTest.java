@@ -1,6 +1,7 @@
 package com.jonghwan.typing.repository;
 
-import com.jonghwan.typing.entity.TypingText;
+import com.jonghwan.typing.domain.typingtext.TypingText;
+import com.jonghwan.typing.domain.typingtext.TypingTextRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
