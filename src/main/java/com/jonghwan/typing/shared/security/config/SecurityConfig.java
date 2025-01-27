@@ -37,7 +37,29 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        // Stateless API 서버 기본 설정
+        configureStatelessApiServer(httpSecurity);
+        configureCors(httpSecurity);
+        configureExceptionHandler(httpSecurity);
+
+        configureHttpRequestsAuthorization(httpSecurity);
+
+        configureOAuth2Login(httpSecurity);
+        addJWTFilter(httpSecurity);
+        return httpSecurity.build();
+    }
+
+    private static void configureStatelessApiServer(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf(AbstractHttpConfigurer::disable);
+        httpSecurity
+                .formLogin(AbstractHttpConfigurer::disable);
+        httpSecurity
+                .httpBasic(AbstractHttpConfigurer::disable);
+        httpSecurity
+                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    }
+
+    private static void configureCors(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors(cors -> cors
                 .configurationSource(new CorsConfigurationSource() {
                     @Override
@@ -56,32 +78,31 @@ public class SecurityConfig {
                         return config;
                     }
                 }));
-        httpSecurity
-                .csrf(AbstractHttpConfigurer::disable);
-        httpSecurity
-                .formLogin(AbstractHttpConfigurer::disable);
-        httpSecurity
-                .httpBasic(AbstractHttpConfigurer::disable);
-        httpSecurity
-                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    }
+
+    private void configureExceptionHandler(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.exceptionHandling((exception) -> exception.authenticationEntryPoint(unauthorizedEntryPoint));
+    }
+
+    private static void configureHttpRequestsAuthorization(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/text/{id}", "/text/random").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/api-docs").permitAll()
                         .requestMatchers("/my").authenticated()
                         .anyRequest().authenticated());
+    }
 
-        httpSecurity.exceptionHandling((exception) -> exception.authenticationEntryPoint(unauthorizedEntryPoint));
-
-        // oauth2UserService 등록
+    private void configureOAuth2Login(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .oauth2Login((oAuth2) -> oAuth2
                         .userInfoEndpoint((config) -> config.userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler)
                 );
+    }
 
+    private void addJWTFilter(HttpSecurity httpSecurity) {
         httpSecurity
                 .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
-        return httpSecurity.build();
     }
 }
