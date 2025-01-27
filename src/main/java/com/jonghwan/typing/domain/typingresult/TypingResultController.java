@@ -36,29 +36,31 @@ public class TypingResultController {
     }
 
     @GetMapping("/my")
-    public ResultFetchResponse fetchMyTypingResult() throws JsonProcessingException {
-        Member member = authService.getCurrentAuthenticatedUser();
-        List<TypingResult> results = typingResultRepository.findByMemberId(member.getId());
-        if(results.isEmpty()) {
-            throw new RuntimeException("No typingResult exists");
+    public List<ResultFetchResponse> fetchMyTypingResults(@RequestParam(defaultValue = "5") int limit) throws JsonProcessingException {
+        if (limit <= 0) {
+            throw new IllegalArgumentException("Limit must be greater than 0");
         }
 
-        return entityToResponse(results.get(0));
-    }
-
-    @GetMapping("/latest")
-    public ResultFetchResponse fetchRecentTypingResult(@RequestParam Long textId) throws JsonProcessingException {
         Member member = authService.getCurrentAuthenticatedUser();
-        List<TypingResult> results = typingResultRepository.findByMemberAndTypingTextOrdered(member.getId(), textId);
-        if(results.isEmpty()) {
-            throw new RuntimeException("No typingResult exists");
+        List<TypingResult> results = typingResultRepository.findByMemberIdOrderByCreatedAtDesc(member.getId());
+        if (results.isEmpty()) {
+            throw new RuntimeException("No typing results exist");
         }
 
-        return entityToResponse(results.get(0));
+        return results.stream()
+                .limit(limit)
+                .map(result -> {
+                    try {
+                        return entityToResponse(result);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException("Failed to process JSON", e);
+                    }
+                })
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResultFetchResponse fetchTypingResult(@PathVariable Long id) throws JsonProcessingException {
+    public ResultFetchResponse fetchTypingResultById(@PathVariable Long id) throws JsonProcessingException {
         TypingResult typingResult = typingResultRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No typingResult exists"));
 
@@ -67,11 +69,14 @@ public class TypingResultController {
 
     private ResultFetchResponse entityToResponse(TypingResult typingResult) throws JsonProcessingException {
         ResultFetchResponse response = new ResultFetchResponse();
+        response.setId(typingResult.getId());
         response.setTextId(typingResult.getTypingText().getId());
+        response.setTitle(typingResult.getTypingText().getTitle());
         response.setAccuracy(typingResult.getAccuracy());
         response.setActualAccuracy(typingResult.getActualAccuracy());
         response.setElapsedMs(typingResult.getElapsedMs());
         response.setCpm(typingResult.getCpm());
+        response.setCreatedAt(typingResult.getCreatedAt());
 
         // TODO: 어차피 json으로 보낼텐데 굳이 리스트로 만들어야할까? 불필요한 연산 정리가 가능한지는 추후에 결정하도록 하자.
         // TODO: 조회: String(DB) -> list(DTO) -> json(client)
