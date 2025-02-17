@@ -11,7 +11,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class TextController {
+public class TypingTextController {
     private final TypingTextRepository repository;
 
     @GetMapping("/text/{id}")

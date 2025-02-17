@@ -1,4 +1,4 @@
-package com.jonghwan.typing.shared.security.handler;
+package com.jonghwan.typing.shared.security.oauth2;
 
 import com.jonghwan.typing.shared.security.dto.CustomOAuth2User;
 import com.jonghwan.typing.shared.security.jwt.JWTUtil;

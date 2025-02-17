@@ -1,4 +1,4 @@
-package com.jonghwan.typing.shared.security.handler;
+package com.jonghwan.typing.shared.security.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jonghwan.typing.shared.base.exception.ErrorResponse;
