@@ -22,6 +22,7 @@ public class MyController {
         myDTO.setEmail(member.getEmail());
         myDTO.setName(member.getName());
         myDTO.setRole(member.getRole());
+        myDTO.setUserId(member.getId());
         log.info("[my] email: {}", member.getEmail());
         return myDTO;
     }
