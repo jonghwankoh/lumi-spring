@@ -43,9 +43,6 @@ public class TypingResultController {
 
         Member member = authService.getCurrentAuthenticatedUser();
         List<TypingResult> results = typingResultRepository.findByMemberIdOrderByCreatedAtDesc(member.getId());
-        if (results.isEmpty()) {
-            throw new RuntimeException("No typing results exist");
-        }
 
         return results.stream()
                 .limit(limit)

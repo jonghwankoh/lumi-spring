@@ -1,4 +1,4 @@
-package com.jonghwan.typing.domain.vocab;
+package com.jonghwan.typing.domain.sentence;
 
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import com.jonghwan.typing.shared.security.Member;
@@ -9,19 +9,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class VocabMeaning extends BaseEntity {
+public class MySentence extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="vocab_id", nullable = false)
-    private Vocab vocab;
-
-    @Column(nullable = false)
-    private String description;
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
-    private Member author;
+    @JoinColumn(name = "meaning_id", nullable = false)
+    private SentenceMeaning meaning;
 }

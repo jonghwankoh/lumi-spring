@@ -54,7 +54,7 @@ public class TextCommentController {
         }
 
         if (!Objects.equals(textComment.getAuthor().getId(), member.getId())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(new DeleteResponse(false, "You are not authorized to delete this comment."));
         }
 

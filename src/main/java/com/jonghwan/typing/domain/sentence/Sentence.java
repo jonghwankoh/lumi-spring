@@ -2,6 +2,7 @@ package com.jonghwan.typing.domain.sentence;
 
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import com.jonghwan.typing.domain.typingtext.TypingText;
+import com.jonghwan.typing.shared.security.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,7 @@ public class Sentence extends BaseEntity {
     @Column(nullable = false)
     private String sentenceText;
 
-
-    @Column(nullable = false)
-    private String translation;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Member author;
 }

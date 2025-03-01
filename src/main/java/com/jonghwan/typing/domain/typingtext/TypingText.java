@@ -23,6 +23,6 @@ public class TypingText extends BaseEntity {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "author_id", nullable = true)
+    @JoinColumn(name = "author_id")
     private Member author;
 }

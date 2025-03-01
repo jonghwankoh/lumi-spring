@@ -1,6 +1,7 @@
 package com.jonghwan.typing.domain.vocab;
 
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
+import com.jonghwan.typing.shared.security.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,4 +16,8 @@ public class Vocab extends BaseEntity {
 
     @Column(nullable = false)
     private String vocabText;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Member author;
 }
