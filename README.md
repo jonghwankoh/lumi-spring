@@ -1,8 +1,8 @@
-## Spring 프로필 설정 (개발 환경: dev)
-spring.profiles.active=dev
+## Example for .env
 
-## JWT 서명용 비밀키 (128비트 HEX 문자열)
-spring.jwt.secret={128bit key(hex)}
-
-## 관리자 계정 이메일 (개발 및 운영 환경에서 사용)
-ADMIN_EMAIL=you@example.com
+JWT_SECRET=dx2pYLmv5IOeOWd6LXcvKkwatBY+8ld/TwsjBvwHb8g=
+SPRING_PROFILES_ACTIVE=dev
+DATABASE_URL=jdbc:mysql://localhost:3306/typing_app
+DATABASE_USER=root
+DATABASE_PASSWORD=0000
+ADMIN_EMAIL=jonghwankoh@ajou.ac.kr
