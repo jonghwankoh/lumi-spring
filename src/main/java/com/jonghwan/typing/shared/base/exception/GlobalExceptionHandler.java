@@ -9,10 +9,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
+        ErrorResponse response = new ErrorResponse("NOT_FOUND", ex.getMessage());
+        log.info("Resource not found", ex);
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ErrorResponse> handleUnauthorizedException(Exception ex) {
         ErrorResponse response = new ErrorResponse("UNAUTHORIZED", ex.getMessage());
-        log.error("Invalid token exception occurred", ex);
+        log.info("Invalid token exception occurred", ex);
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
