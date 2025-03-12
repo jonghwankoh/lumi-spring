@@ -1,7 +1,6 @@
 package com.jonghwan.typing.domain.typingtext;
 
 import com.jonghwan.typing.domain.typingtext.dto.TypingTextFetchResponse;
-import com.jonghwan.typing.shared.security.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
