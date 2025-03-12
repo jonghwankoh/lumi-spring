@@ -10,4 +10,4 @@ DATABASE_USER=root
 
 DATABASE_PASSWORD=0000
 
-ADMIN_EMAIL=jonghwankoh@ajou.ac.kr
+ADMIN_EMAIL=admin@example.com
