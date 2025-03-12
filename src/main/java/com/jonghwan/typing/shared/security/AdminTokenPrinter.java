@@ -45,7 +45,7 @@ public class AdminTokenPrinter implements ApplicationRunner {
                 
                 ====================
                  Admin JWT Token:\s
-                 {}
+                 Authorization={}; Path=/; HttpOnly;
                 ====================
                 """, adminToken);
     }
