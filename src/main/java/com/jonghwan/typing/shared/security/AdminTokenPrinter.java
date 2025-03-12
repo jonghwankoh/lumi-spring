@@ -19,7 +19,7 @@ public class AdminTokenPrinter implements ApplicationRunner {
     private final JWTUtil jwtUtil;
     private final MemberRepository memberRepository;
 
-    @Value("${admin.email:${ADMIN_EMAIL}}")
+    @Value("${ADMIN_EMAIL}")
     private String adminEmail;
 
     @Override
@@ -45,7 +45,7 @@ public class AdminTokenPrinter implements ApplicationRunner {
                 
                 ====================
                  Admin JWT Token:\s
-                 {}
+                 Authorization={}; Path=/; HttpOnly;
                 ====================
                 """, adminToken);
     }

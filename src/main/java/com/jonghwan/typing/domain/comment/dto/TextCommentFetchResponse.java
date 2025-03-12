@@ -1,12 +1,12 @@
 package com.jonghwan.typing.domain.comment.dto;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
+@Builder
 public class TextCommentFetchResponse {
     private Long id;
 
@@ -16,7 +16,7 @@ public class TextCommentFetchResponse {
 
     private String content;
 
-    private Integer likeNum;
+    private Long likeCount;
     private Boolean isLiked;
 
 

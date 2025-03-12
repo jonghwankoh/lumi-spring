@@ -63,15 +63,16 @@ public class TextCommentController {
     }
 
     private TextCommentFetchResponse entityToResponse(TextComment textComment) {
-        TextCommentFetchResponse response = new TextCommentFetchResponse();
-        response.setId(textComment.getId());
-        response.setLikeNum(0);
-        response.setIsLiked(false);
-        response.setAuthorImg("https://picsum.photos/id/"+ (textComment.getAuthor().getId() + randomNumber) % 200 +"/200/300");
-        response.setAuthorId(textComment.getAuthor().getId());
-        response.setAuthorName(textComment.getAuthor().getName());
-        response.setContent(textComment.getContent());
-        response.setCreatedAt(textComment.getCreatedAt());
-        return response;
+
+        return TextCommentFetchResponse.builder()
+                .id(textComment.getId())
+                .likeCount(0L)
+                .isLiked(false)
+                .authorImg("https://picsum.photos/id/" + ((textComment.getAuthor().getId() + randomNumber) % 200) + "/200/300")
+                .authorId(textComment.getAuthor().getId())
+                .authorName(textComment.getAuthor().getName())
+                .content(textComment.getContent())
+                .createdAt(textComment.getCreatedAt())
+                .build();
     }
 }
