@@ -25,4 +25,8 @@ public class TypingText extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Member author;
+
+    public Long getAuthorId() {
+        return author != null ? author.getId() : null;
+    }
 }
