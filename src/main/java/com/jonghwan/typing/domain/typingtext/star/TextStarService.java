@@ -1,0 +1,47 @@
+package com.jonghwan.typing.domain.typingtext.star;
+
+import com.jonghwan.typing.domain.typingtext.TypingText;
+import com.jonghwan.typing.domain.typingtext.TypingTextRepository;
+import com.jonghwan.typing.shared.base.dto.DeleteResponse;
+import com.jonghwan.typing.shared.base.dto.PostResponse;
+import com.jonghwan.typing.shared.base.exception.BadRequestException;
+import com.jonghwan.typing.shared.base.exception.NotFoundException;
+import com.jonghwan.typing.shared.security.AuthService;
+import com.jonghwan.typing.shared.security.Member;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class TextStarService {
+    private final AuthService authService;
+    private final TypingTextRepository textRepository;
+    private final TextStarRepository starRepository;
+
+    public PostResponse addStar(Long textId) {
+        Member member = authService.getCurrentAuthenticatedUser();
+        TypingText typingText = textRepository.findById(textId)
+                .orElseThrow(() -> new NotFoundException("Text not found"));
+
+        boolean exists = starRepository.existsByTypingTextIdAndMemberId(textId, member.getId());
+        if(exists) {
+            throw new BadRequestException("Star already exists");
+        }
+
+        TextStar star = new TextStar(member, typingText);
+        starRepository.save(star);
+        return new PostResponse(true, "Star saved", star.getId());
+    }
+
+    public DeleteResponse unstarText(Long textId) {
+        Member member = authService.getCurrentAuthenticatedUser();
+
+        TextStar star = starRepository.findByMemberAndTypingTextId(member, textId)
+                .orElseThrow(() -> new NotFoundException("Star not found"));
+        starRepository.delete(star);
+        return new DeleteResponse(true, "Text deleted");
+    }
+}
+
