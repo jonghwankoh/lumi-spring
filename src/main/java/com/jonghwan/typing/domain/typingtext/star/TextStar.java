@@ -5,11 +5,11 @@ import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import com.jonghwan.typing.shared.security.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Entity
+@Table(name = "text_star",
+        uniqueConstraints = @UniqueConstraint(name = "unique_member_text", columnNames = {"member_id", "text_id"}))
 public class TextStar extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +22,11 @@ public class TextStar extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "text_id", nullable = false)
     private TypingText typingText;
+
+    protected TextStar() {}
+
+    public TextStar(Member member, TypingText typingText) {
+        this.member = member;
+        this.typingText = typingText;
+    }
 }
