@@ -4,6 +4,7 @@ import com.jonghwan.typing.domain.comment.TextCommentRepository;
 import com.jonghwan.typing.domain.comment.dto.TextCommentFetchResponse;
 import com.jonghwan.typing.domain.typingtext.dto.TypingTextFetchResponse;
 import com.jonghwan.typing.domain.typingtext.like.TextLikeRepository;
+import com.jonghwan.typing.domain.typingtext.star.TextStarRepository;
 import com.jonghwan.typing.shared.base.exception.NotFoundException;
 import com.jonghwan.typing.shared.security.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class TypingTextService {
     private final AuthService authService;
     private final TypingTextRepository typingTextRepository;
     private final TextLikeRepository likeRepository;
-//    private final TextStarRepository starRepository;
+    private final TextStarRepository starRepository;
     private final TextCommentRepository commentRepository;
 
     private final int randomNumber = (int) (Math.random() * 200);
@@ -38,7 +39,7 @@ public class TypingTextService {
         Long memberId = authService.getCurrentAuthenticatedUser().getId();
         Long likeCount = likeRepository.countByTypingTextId(textId);
         boolean isLiked = likeRepository.existsByTypingTextIdAndMemberId(textId, memberId);
-//        boolean isStarred = starRepository.existsByTypingTextIdAndMemberId(textId, memberId);
+        boolean isStarred = starRepository.existsByTypingTextIdAndMemberId(textId, memberId);
 
         List<TextCommentFetchResponse> comments = commentRepository.findByTypingTextId(textId).stream()
                 .map(c -> TextCommentFetchResponse.builder()
@@ -47,8 +48,8 @@ public class TypingTextService {
                         .authorId(c.getAuthor().getId())
                         .authorName(c.getAuthor().getName())
                         .authorImg("https://picsum.photos/id/" + ((c.getAuthor().getId() + randomNumber) % 200) + "/200/300")
-                        .likeCount(0L) // TODO
-                        .isLiked(false) // TODO
+                        .likeCount(0L) // TODO: CommentLike
+                        .isLiked(false) // TODO: CommentLike
                         .build()).toList();
 
         return TypingTextFetchResponse.builder()
@@ -58,7 +59,7 @@ public class TypingTextService {
                 .authorId(text.getAuthorId())
                 .likeCount(likeCount)
                 .isLiked(isLiked)
-                .isStarred(false) // TODO
+                .isStarred(isStarred)
                 .comments(comments)
                 .build();
     }
