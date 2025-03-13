@@ -11,7 +11,4 @@ public interface TypingResultRepository extends JpaRepository<TypingResult, Long
     List<TypingResult> findByMemberAndTypingTextOrdered(@Param("memberId") Long memberId, @Param("textId") Long textId);
 
     List<TypingResult> findByMemberIdOrderByCreatedAtDesc(Long memberId);
-
-    //TODO: findTopByUserIdAndResourceBIdOrderByCreatedAtDesc 검토(chat gpt 피셜)
-    //Optional<TypingResult> findTopByMemberIdAndTextIdOrderByCreatedAtDesc(Long memberId, Long textId);
 }
