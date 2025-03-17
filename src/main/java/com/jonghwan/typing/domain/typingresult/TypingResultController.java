@@ -9,7 +9,6 @@ import com.jonghwan.typing.domain.typingtext.TypingText;
 import com.jonghwan.typing.domain.typingtext.TypingTextRepository;
 import com.jonghwan.typing.domain.typingresult.dto.ResultSubmitRequest;
 import com.jonghwan.typing.shared.base.dto.PostResponse;
-import com.jonghwan.typing.shared.base.dto.Response;
 import com.jonghwan.typing.shared.security.Member;
 import com.jonghwan.typing.shared.security.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +36,7 @@ public class TypingResultController {
     }
 
     @GetMapping("/my")
-    public List<ResultFetchResponse> fetchMyTypingResults(@RequestParam(defaultValue = "5") int limit) throws JsonProcessingException {
+    public List<ResultFetchResponse> fetchMyTypingResults(@RequestParam(defaultValue = "5") int limit) {
         if (limit <= 0) {
             throw new IllegalArgumentException("Limit must be greater than 0");
         }
