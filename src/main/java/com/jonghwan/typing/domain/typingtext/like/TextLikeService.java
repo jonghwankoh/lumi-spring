@@ -2,8 +2,8 @@ package com.jonghwan.typing.domain.typingtext.like;
 
 import com.jonghwan.typing.domain.typingtext.TypingText;
 import com.jonghwan.typing.domain.typingtext.TypingTextRepository;
-import com.jonghwan.typing.shared.base.dto.DeleteResponse;
 import com.jonghwan.typing.shared.base.dto.PostResponse;
+import com.jonghwan.typing.shared.base.dto.Response;
 import com.jonghwan.typing.shared.base.exception.BadRequestException;
 import com.jonghwan.typing.shared.base.exception.NotFoundException;
 import com.jonghwan.typing.shared.security.AuthService;
@@ -33,10 +33,10 @@ public class TextLikeService {
         TextLike like = new TextLike(member, typingText);
         likeRepository.save(like);
 
-        return new PostResponse(true, "Like saved", like.getId());
+        return PostResponse.of("Like saved", like.getId());
     }
 
-    public DeleteResponse unlikeText(Long textId) {
+    public Response unlikeText(Long textId) {
         Member member = authService.getCurrentAuthenticatedUser();
 
         TextLike textLike = likeRepository.findByMemberAndTypingTextId(member, textId)
@@ -44,7 +44,7 @@ public class TextLikeService {
 
         likeRepository.delete(textLike);
 
-        return new DeleteResponse(true, "Text deleted");
+        return Response.of("Text deleted");
     }
 }
 

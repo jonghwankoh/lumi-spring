@@ -3,15 +3,15 @@ package com.jonghwan.typing.domain.comment;
 import com.jonghwan.typing.domain.comment.dto.TextCommentFetchResponse;
 import com.jonghwan.typing.domain.comment.dto.TextCommentSubmitRequest;
 import com.jonghwan.typing.domain.typingtext.TypingText;
-import com.jonghwan.typing.shared.base.dto.DeleteResponse;
 import com.jonghwan.typing.shared.base.dto.PostResponse;
+import com.jonghwan.typing.shared.base.dto.Response;
+import com.jonghwan.typing.shared.base.exception.ForbiddenException;
+import com.jonghwan.typing.shared.base.exception.NotFoundException;
 import com.jonghwan.typing.shared.security.AuthService;
 import com.jonghwan.typing.shared.security.Member;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,25 +41,22 @@ public class TextCommentController {
         textComment.setContent(request.getContent());
         repository.save(textComment);
 
-        return new PostResponse(true, "Comment has been saved.", textComment.getId());
+        return PostResponse.of("Comment has been saved", textComment.getId());
     }
 
     @DeleteMapping("/comments/{commentId}")
-    public ResponseEntity<DeleteResponse> deleteTextComment(@PathVariable Long commentId) {
+    public Response deleteTextComment(@PathVariable Long commentId) {
         Member member = authService.getCurrentAuthenticatedUser();
         TextComment textComment = repository.findById(commentId).orElse(null);
         if (textComment == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new DeleteResponse(false, "Comment not found."));
+            throw new NotFoundException("Comment not found.");
         }
-
         if (!Objects.equals(textComment.getAuthor().getId(), member.getId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(new DeleteResponse(false, "You are not authorized to delete this comment."));
+            throw new ForbiddenException("You are not authorized to delete this comment.");
         }
 
         repository.delete(textComment);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return Response.of("Comment has been deleted.");
     }
 
     private TextCommentFetchResponse entityToResponse(TextComment textComment) {

@@ -1,7 +1,7 @@
 package com.jonghwan.typing.domain.typingtext.star;
 
-import com.jonghwan.typing.shared.base.dto.DeleteResponse;
 import com.jonghwan.typing.shared.base.dto.PostResponse;
+import com.jonghwan.typing.shared.base.dto.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +21,7 @@ public class TextStarController {
     }
 
     @DeleteMapping("/text/{textId}/stars")
-    public DeleteResponse unstar(@PathVariable Long textId) {
+    public Response unstar(@PathVariable Long textId) {
         return starService.unstarText(textId);
     }
 }

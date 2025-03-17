@@ -9,6 +9,7 @@ import com.jonghwan.typing.domain.typingtext.TypingText;
 import com.jonghwan.typing.domain.typingtext.TypingTextRepository;
 import com.jonghwan.typing.domain.typingresult.dto.ResultSubmitRequest;
 import com.jonghwan.typing.shared.base.dto.PostResponse;
+import com.jonghwan.typing.shared.base.dto.Response;
 import com.jonghwan.typing.shared.security.Member;
 import com.jonghwan.typing.shared.security.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class TypingResultController {
         TypingResult typingResult = requestToEntity(request, member);
         typingResultRepository.save(typingResult);
 
-        return new PostResponse(true, "Typing result have been saved.", typingResult.getId());
+        return new PostResponse("Typing result have been saved", typingResult.getId());
     }
 
     @GetMapping("/my")

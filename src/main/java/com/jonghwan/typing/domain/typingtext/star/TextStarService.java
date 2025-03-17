@@ -2,8 +2,8 @@ package com.jonghwan.typing.domain.typingtext.star;
 
 import com.jonghwan.typing.domain.typingtext.TypingText;
 import com.jonghwan.typing.domain.typingtext.TypingTextRepository;
-import com.jonghwan.typing.shared.base.dto.DeleteResponse;
 import com.jonghwan.typing.shared.base.dto.PostResponse;
+import com.jonghwan.typing.shared.base.dto.Response;
 import com.jonghwan.typing.shared.base.exception.BadRequestException;
 import com.jonghwan.typing.shared.base.exception.NotFoundException;
 import com.jonghwan.typing.shared.security.AuthService;
@@ -32,16 +32,16 @@ public class TextStarService {
 
         TextStar star = new TextStar(member, typingText);
         starRepository.save(star);
-        return new PostResponse(true, "Star saved", star.getId());
+        return PostResponse.of("Star saved", star.getId());
     }
 
-    public DeleteResponse unstarText(Long textId) {
+    public Response unstarText(Long textId) {
         Member member = authService.getCurrentAuthenticatedUser();
 
         TextStar star = starRepository.findByMemberAndTypingTextId(member, textId)
                 .orElseThrow(() -> new NotFoundException("Star not found"));
         starRepository.delete(star);
-        return new DeleteResponse(true, "Text deleted");
+        return Response.of("Text deleted");
     }
 }
 
