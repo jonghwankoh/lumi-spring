@@ -3,7 +3,7 @@ package com.jonghwan.typing.shared.security.config;
 import com.jonghwan.typing.shared.security.jwt.JWTFilter;
 import com.jonghwan.typing.shared.security.jwt.JWTUtil;
 import com.jonghwan.typing.shared.security.oauth2.CustomSuccessHandler;
-import com.jonghwan.typing.shared.security.exception.UnauthorizedEntryPoint;
+import com.jonghwan.typing.shared.security.handler.UnauthorizedEntryPoint;
 import com.jonghwan.typing.shared.security.oauth2.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
