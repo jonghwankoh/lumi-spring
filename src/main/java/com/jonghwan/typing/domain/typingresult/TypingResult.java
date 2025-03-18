@@ -4,13 +4,9 @@ import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import com.jonghwan.typing.shared.security.Member;
 import com.jonghwan.typing.domain.typingtext.TypingText;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TypingResult extends BaseEntity {
@@ -43,4 +39,16 @@ public class TypingResult extends BaseEntity {
 
     @Column(columnDefinition = "json", nullable = false)
     private String elapsedMsPerChar;
+
+    @Builder
+    public TypingResult(Member member, TypingText typingText, int accuracy, int actualAccuracy, int elapsedMs, int cpm, String matchPerChar, String elapsedMsPerChar) {
+        this.member = member;
+        this.typingText = typingText;
+        this.accuracy = accuracy;
+        this.actualAccuracy = actualAccuracy;
+        this.elapsedMs = elapsedMs;
+        this.cpm = cpm;
+        this.matchPerChar = matchPerChar;
+        this.elapsedMsPerChar = elapsedMsPerChar;
+    }
 }

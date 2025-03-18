@@ -2,13 +2,9 @@ package com.jonghwan.typing.shared.security;
 
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
@@ -27,4 +23,20 @@ public class Member extends BaseEntity {
 
     @Column(nullable = false)
     private String role;
+
+    @Builder
+    public Member(String username, String name, String email, String role) {
+        this.username = username;
+        this.name = name;
+        this.email = email;
+        this.role = role;
+    }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
 }

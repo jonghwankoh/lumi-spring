@@ -33,11 +33,12 @@ public class AdminTokenPrinter implements ApplicationRunner {
         Member updateMember;
         if (findMember.isEmpty()) {
             // admin 등록
-            updateMember = new Member();
-            updateMember.setUsername(adminUsername);
-            updateMember.setRole(adminRole);
-            updateMember.setName(adminName);
-            updateMember.setEmail(adminEmail);
+            updateMember = Member.builder()
+                    .username(adminUsername)
+                    .role(adminRole)
+                    .name(adminName)
+                    .email(adminEmail)
+                    .build();
             memberRepository.save(updateMember);
         }
         String adminToken = jwtUtil.createJwt(adminUsername, adminRole, 1000L*3600*24);

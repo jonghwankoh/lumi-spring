@@ -30,7 +30,10 @@ public class TextStarService {
             throw new BadRequestException("Star already exists");
         }
 
-        TextStar star = new TextStar(member, typingText);
+        TextStar star = TextStar.builder()
+                .member(member)
+                .typingText(typingText)
+                .build();
         starRepository.save(star);
         return PostResponse.of("Star saved", star.getId());
     }

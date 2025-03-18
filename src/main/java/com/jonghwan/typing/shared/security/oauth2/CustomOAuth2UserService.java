@@ -40,20 +40,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // DB 조회/저장
         Optional<Member> findMember = memberRepository.findByUsername(username);
 
-        Member updateMember;
+        Member currentMember;
         if (findMember.isEmpty()) {
             // 회원가입
-            updateMember = new Member();
-            updateMember.setUsername(username);
-            updateMember.setRole("ROLE_USER");
+            currentMember = Member.builder()
+                    .name(oAuth2Response.getName())
+                    .email(oAuth2Response.getEmail())
+                    .build();
+
         } else {
             // 기존 로그인
-            updateMember = findMember.get();
+            currentMember = findMember.get();
+            // 이메일, 이름 등록 및 업데이트
+            currentMember.updateName(oAuth2Response.getName());
+            currentMember.updateEmail(oAuth2Response.getEmail());
         }
-        // 이메일, 이름 등록 및 업데이트
-        updateMember.setName(oAuth2Response.getName());
-        updateMember.setEmail(oAuth2Response.getEmail());
-        Member savedMember = memberRepository.save(updateMember);
+        Member savedMember = memberRepository.save(currentMember);
 
         // 유저정보 반환
         AuthUserDTO authUserDTO = new AuthUserDTO();

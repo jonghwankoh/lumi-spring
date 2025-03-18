@@ -3,6 +3,7 @@ package com.jonghwan.typing.domain.comment;
 import com.jonghwan.typing.domain.comment.dto.TextCommentFetchResponse;
 import com.jonghwan.typing.domain.comment.dto.TextCommentSubmitRequest;
 import com.jonghwan.typing.domain.typingtext.TypingText;
+import com.jonghwan.typing.domain.typingtext.TypingTextRepository;
 import com.jonghwan.typing.shared.base.dto.PostResponse;
 import com.jonghwan.typing.shared.base.dto.Response;
 import com.jonghwan.typing.shared.base.exception.ForbiddenException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -23,6 +25,7 @@ import java.util.Objects;
 public class TextCommentController {
     private final AuthService authService;
     private final TextCommentRepository repository;
+    private final TypingTextRepository textRepository;
     private final EntityManager em;
     private final int randomNumber = (int) (Math.random() * 200);
 
@@ -35,10 +38,13 @@ public class TextCommentController {
     @PostMapping("/text/{textId}/comments")
     public PostResponse postTextComment(@PathVariable Long textId, @RequestBody TextCommentSubmitRequest request) {
         Member member = authService.getCurrentAuthenticatedUser();
-        TextComment textComment = new TextComment();
-        textComment.setTypingText(em.getReference(TypingText.class, textId));
-        textComment.setAuthor(member);
-        textComment.setContent(request.getContent());
+        TypingText text = textRepository.findById(textId)
+                .orElseThrow(() -> new NotFoundException("text not found"));
+        TextComment textComment = TextComment.builder()
+                .typingText(text)
+                .author(member)
+                .content(request.getContent())
+                .build();
         repository.save(textComment);
 
         return PostResponse.of("Comment has been saved", textComment.getId());

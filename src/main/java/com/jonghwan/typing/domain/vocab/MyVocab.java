@@ -3,13 +3,9 @@ package com.jonghwan.typing.domain.vocab;
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import com.jonghwan.typing.shared.security.Member;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MyVocab extends BaseEntity {
@@ -24,4 +20,11 @@ public class MyVocab extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "meaning_id", nullable = false)
     private VocabMeaning meaning;
+
+    @Builder
+
+    public MyVocab(Member member, VocabMeaning meaning) {
+        this.member = member;
+        this.meaning = meaning;
+    }
 }

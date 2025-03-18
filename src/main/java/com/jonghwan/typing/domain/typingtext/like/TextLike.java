@@ -4,6 +4,7 @@ import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import com.jonghwan.typing.shared.security.Member;
 import com.jonghwan.typing.domain.typingtext.TypingText;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -25,6 +26,7 @@ public class TextLike extends BaseEntity {
 
     protected TextLike() {}
 
+    @Builder
     public TextLike(Member member, TypingText typingText) {
         this.member = member;
         this.typingText = typingText;

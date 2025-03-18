@@ -4,13 +4,9 @@ import com.jonghwan.typing.domain.comment.TextComment;
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import com.jonghwan.typing.shared.security.Member;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TextCommentLike extends BaseEntity {
@@ -25,4 +21,10 @@ public class TextCommentLike extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "comment_id", nullable = false)
     private TextComment textComment;
+
+    @Builder
+    public TextCommentLike(Member member, TextComment textComment) {
+        this.member = member;
+        this.textComment = textComment;
+    }
 }

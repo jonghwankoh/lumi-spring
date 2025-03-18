@@ -30,7 +30,10 @@ public class TextLikeService {
             throw new BadRequestException("Like already exists");
         }
 
-        TextLike like = new TextLike(member, typingText);
+        TextLike like = TextLike.builder()
+                .member(member)
+                .typingText(typingText)
+                .build();
         likeRepository.save(like);
 
         return PostResponse.of("Like saved", like.getId());

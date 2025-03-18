@@ -4,13 +4,9 @@ import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import com.jonghwan.typing.shared.security.Member;
 import com.jonghwan.typing.domain.typingtext.TypingText;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TextComment extends BaseEntity {
@@ -28,4 +24,11 @@ public class TextComment extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    @Builder
+    public TextComment(Member author, TypingText typingText, String content) {
+        this.author = author;
+        this.typingText = typingText;
+        this.content = content;
+    }
 }

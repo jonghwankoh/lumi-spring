@@ -92,22 +92,20 @@ public class TypingResultController {
         TypingText typingText = typingTextRepository.findById(request.getTextId())
                 .orElseThrow(() -> new RuntimeException("No such TypingText id"));
 
-        TypingResult typingResult = new TypingResult();
-        typingResult.setMember(member);
-        typingResult.setTypingText(typingText);
-
-        typingResult.setAccuracy(request.getAccuracy());
-        typingResult.setActualAccuracy(request.getActualAccuracy());
-        typingResult.setElapsedMs(request.getElapsedMs());
-        typingResult.setCpm(request.getCpm());
-
-        // TODO: 저장: json(client) -> list(JPA) -> String(DB)
+        // TODO: 불필요한 변환 문제 json(client) -> list(JPA) -> String(DB)
         List<Boolean> matchPerChar = request.getMatchPerChar();
         List<Integer> elapsedMsPerChar = request.getElapsedMsPerChar();
         ObjectMapper objectMapper = new ObjectMapper();
-        typingResult.setMatchPerChar(objectMapper.writeValueAsString(matchPerChar));
-        typingResult.setElapsedMsPerChar(objectMapper.writeValueAsString(elapsedMsPerChar));
 
-        return typingResult;
+        return TypingResult.builder()
+                .member(member)
+                .typingText(typingText)
+                .accuracy(request.getAccuracy())
+                .actualAccuracy(request.getActualAccuracy())
+                .matchPerChar(objectMapper.writeValueAsString(matchPerChar))
+                .elapsedMsPerChar(objectMapper.writeValueAsString(elapsedMsPerChar))
+                .elapsedMs(request.getElapsedMs())
+                .cpm(request.getCpm())
+                .build();
     }
 }
