@@ -1,8 +1,6 @@
 package com.jonghwan.typing.domain.typingresult.dto;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
@@ -14,7 +12,7 @@ public record ResultSubmitRequest(
         Integer elapsedMs,
         Integer cpm,
 
-        String matchPerChar,
-        String elapsedMsPerChar
+        List<Boolean> matchPerChar,
+        List<Integer> elapsedMsPerChar
 ) {
 }

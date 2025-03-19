@@ -34,21 +34,21 @@ public class TypingResult extends BaseEntity {
     @Column(nullable = false)
     private int cpm;
 
-    @Column(columnDefinition = "json", nullable = false)
-    private String matchPerChar;
+    @Column(name = "match_per_char", columnDefinition = "json", nullable = false)
+    private String matchPerCharJson;
 
-    @Column(columnDefinition = "json", nullable = false)
-    private String elapsedMsPerChar;
+    @Column(name = "elapsed_ms_per_char", columnDefinition = "json", nullable = false)
+    private String elapsedMsPerCharJson;
 
     @Builder
-    public TypingResult(Member member, TypingText typingText, int accuracy, int actualAccuracy, int elapsedMs, int cpm, String matchPerChar, String elapsedMsPerChar) {
+    public TypingResult(Member member, TypingText typingText, int accuracy, int actualAccuracy, int elapsedMs, int cpm, String matchPerCharJson, String elapsedMsPerCharJson) {
         this.member = member;
         this.typingText = typingText;
         this.accuracy = accuracy;
         this.actualAccuracy = actualAccuracy;
         this.elapsedMs = elapsedMs;
         this.cpm = cpm;
-        this.matchPerChar = matchPerChar;
-        this.elapsedMsPerChar = elapsedMsPerChar;
+        this.matchPerCharJson = matchPerCharJson;
+        this.elapsedMsPerCharJson = elapsedMsPerCharJson;
     }
 }

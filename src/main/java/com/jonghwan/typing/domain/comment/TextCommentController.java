@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -43,7 +42,7 @@ public class TextCommentController {
         TextComment textComment = TextComment.builder()
                 .typingText(text)
                 .author(member)
-                .content(request.getContent())
+                .content(request.content())
                 .build();
         repository.save(textComment);
 

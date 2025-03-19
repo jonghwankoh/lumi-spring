@@ -14,6 +14,6 @@ public record ResultFetchResponse(
     int elapsedMs,
     int cpm,
     LocalDateTime createdAt,
-    String matchPerChar,
-    String elapsedMsPerChar
+    List<Boolean> matchPerChar,
+    List<Integer> elapsedMsPerChar
 ) { }
