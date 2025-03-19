@@ -3,13 +3,15 @@ package com.jonghwan.typing.domain.typingtext;
 import com.jonghwan.typing.shared.security.Member;
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Check;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Check(constraints = "content REGEXP '^[ A-Za-z0-9{}\\\\[\\\\]?.,;:|()*~`!^\\\\-_+<>@#$%&=\\'\\\"]*$'")
 public class TypingText extends BaseEntity {
     @Id

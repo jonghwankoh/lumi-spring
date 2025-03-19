@@ -4,13 +4,16 @@ import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import com.jonghwan.typing.shared.security.Member;
 import com.jonghwan.typing.domain.typingtext.TypingText;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Table(name = "text_like",
         uniqueConstraints = @UniqueConstraint(name = "unique_member_text", columnNames = {"member_id", "text_id"}))
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TextLike extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +26,6 @@ public class TextLike extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "text_id", nullable = false)
     private TypingText typingText;
-
-    protected TextLike() {}
 
     @Builder
     public TextLike(Member member, TypingText typingText) {

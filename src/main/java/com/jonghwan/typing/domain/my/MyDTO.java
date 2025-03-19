@@ -1,11 +1,12 @@
 package com.jonghwan.typing.domain.my;
 
-import lombok.Data;
+import lombok.Builder;
 
-@Data
-public class MyDTO {
-    private Long userId;
-    private String email;
-    private String name;
-    private String role;
+@Builder
+public record MyDTO(
+        Long userId,
+        String email,
+        String name,
+        String role
+) {
 }

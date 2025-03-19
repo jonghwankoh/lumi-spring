@@ -4,11 +4,14 @@ import com.jonghwan.typing.domain.typingtext.TypingText;
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import com.jonghwan.typing.shared.security.Member;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "text_star",
         uniqueConstraints = @UniqueConstraint(name = "unique_member_text", columnNames = {"member_id", "text_id"}))
 public class TextStar extends BaseEntity {
@@ -23,8 +26,6 @@ public class TextStar extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "text_id", nullable = false)
     private TypingText typingText;
-
-    protected TextStar() {}
 
     @Builder
     public TextStar(Member member, TypingText typingText) {

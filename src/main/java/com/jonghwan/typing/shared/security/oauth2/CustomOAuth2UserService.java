@@ -58,10 +58,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         Member savedMember = memberRepository.save(currentMember);
 
         // 유저정보 반환
-        AuthUserDTO authUserDTO = new AuthUserDTO();
-        authUserDTO.setUsername(savedMember.getUsername());
-        authUserDTO.setName(savedMember.getName());
-        authUserDTO.setRole(savedMember.getRole());
+        AuthUserDTO authUserDTO = AuthUserDTO.builder()
+                .username(savedMember.getUsername())
+                .name(savedMember.getName())
+                .role(savedMember.getRole())
+                .build();
         return new CustomOAuth2User(authUserDTO);
     }
 }

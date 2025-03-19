@@ -1,10 +1,9 @@
 package com.jonghwan.typing.domain.comment.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-public class TextCommentSubmitRequest {
-    private String content;
+@Builder
+public record TextCommentSubmitRequest(String content) {
 }

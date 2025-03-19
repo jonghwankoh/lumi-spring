@@ -18,12 +18,11 @@ public class MyController {
     public MyDTO getMy() {
         Member member = authService.getCurrentAuthenticatedUser();
 
-        MyDTO myDTO = new MyDTO();
-        myDTO.setEmail(member.getEmail());
-        myDTO.setName(member.getName());
-        myDTO.setRole(member.getRole());
-        myDTO.setUserId(member.getId());
-        log.info("[my] email: {}", member.getEmail());
-        return myDTO;
+        return MyDTO.builder()
+                .email(member.getEmail())
+                .name(member.getName())
+                .role(member.getRole())
+                .userId(member.getId())
+                .build();
     }
 }

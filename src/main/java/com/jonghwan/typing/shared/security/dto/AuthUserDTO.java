@@ -1,12 +1,11 @@
 package com.jonghwan.typing.shared.security.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
 
-@Getter
-@Setter
-public class AuthUserDTO {
-    private String username;
-    private String name;
-    private String role;
+@Builder
+public record AuthUserDTO(
+        String username,
+        String name,
+        String role
+) {
 }
