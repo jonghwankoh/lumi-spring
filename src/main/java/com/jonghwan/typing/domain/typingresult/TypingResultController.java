@@ -11,7 +11,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/result")
+@RequestMapping("/api/result")
 @RequiredArgsConstructor
 public class TypingResultController {
     private final TypingResultService typingResultService;
