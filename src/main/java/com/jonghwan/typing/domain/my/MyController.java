@@ -1,6 +1,8 @@
 package com.jonghwan.typing.domain.my;
 
-import com.jonghwan.typing.shared.security.Member;
+import com.jonghwan.typing.shared.security.member.Login;
+import com.jonghwan.typing.shared.security.member.LoginMember;
+import com.jonghwan.typing.shared.security.member.Member;
 import com.jonghwan.typing.shared.security.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,14 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyController {
     private final AuthService authService;
     @GetMapping
-    public MyDTO getMy() {
-        Member member = authService.getCurrentAuthenticatedUser();
-
+    public MyDTO getMy(@Login LoginMember loginMember) {
         return MyDTO.builder()
-                .email(member.getEmail())
-                .name(member.getName())
-                .role(member.getRole())
-                .userId(member.getId())
+                .memberId(loginMember.id())
+                .name(loginMember.name())
+                .email(loginMember.email())
+                .role(loginMember.role())
                 .build();
     }
 }

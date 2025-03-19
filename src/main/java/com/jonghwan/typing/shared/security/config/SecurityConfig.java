@@ -2,9 +2,9 @@ package com.jonghwan.typing.shared.security.config;
 
 import com.jonghwan.typing.shared.security.jwt.JWTFilter;
 import com.jonghwan.typing.shared.security.jwt.JWTUtil;
-import com.jonghwan.typing.shared.security.oauth2.CustomSuccessHandler;
+import com.jonghwan.typing.shared.security.handler.oauth2.OAuth2LoginSuccessHandler;
 import com.jonghwan.typing.shared.security.handler.UnauthorizedEntryPoint;
-import com.jonghwan.typing.shared.security.oauth2.CustomOAuth2UserService;
+import com.jonghwan.typing.shared.security.handler.oauth2.OAuth2UserLoader;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,14 +23,14 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final CustomSuccessHandler customSuccessHandler;
+    private final OAuth2UserLoader oAuth2UserLoader;
+    private final OAuth2LoginSuccessHandler OAuth2LoginSuccessHandler;
     private final JWTUtil jwtUtil;
     private final UnauthorizedEntryPoint unauthorizedEntryPoint;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil, UnauthorizedEntryPoint unauthorizedEntryPoint) {
-        this.customOAuth2UserService = customOAuth2UserService;
-        this.customSuccessHandler = customSuccessHandler;
+    public SecurityConfig(OAuth2UserLoader oAuth2UserLoader, OAuth2LoginSuccessHandler OAuth2LoginSuccessHandler, JWTUtil jwtUtil, UnauthorizedEntryPoint unauthorizedEntryPoint) {
+        this.oAuth2UserLoader = oAuth2UserLoader;
+        this.OAuth2LoginSuccessHandler = OAuth2LoginSuccessHandler;
         this.jwtUtil = jwtUtil;
         this.unauthorizedEntryPoint = unauthorizedEntryPoint;
     }
@@ -96,8 +96,8 @@ public class SecurityConfig {
     private void configureOAuth2Login(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .oauth2Login((oAuth2) -> oAuth2
-                        .userInfoEndpoint((config) -> config.userService(customOAuth2UserService))
-                        .successHandler(customSuccessHandler)
+                        .userInfoEndpoint((config) -> config.userService(oAuth2UserLoader))
+                        .successHandler(OAuth2LoginSuccessHandler)
                 );
     }
 

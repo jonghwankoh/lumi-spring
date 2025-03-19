@@ -8,10 +8,12 @@ import com.jonghwan.typing.domain.typingresult.dto.ResultSubmitRequest;
 import com.jonghwan.typing.domain.typingtext.TypingText;
 import com.jonghwan.typing.domain.typingtext.TypingTextRepository;
 import com.jonghwan.typing.shared.base.dto.PostResponse;
-import com.jonghwan.typing.shared.base.exception.BadRequestException;
-import com.jonghwan.typing.shared.base.exception.NotFoundException;
+import com.jonghwan.typing.shared.exception.custom.BadRequestException;
+import com.jonghwan.typing.shared.exception.custom.NotFoundException;
 import com.jonghwan.typing.shared.security.AuthService;
-import com.jonghwan.typing.shared.security.Member;
+import com.jonghwan.typing.shared.security.member.LoginMember;
+import com.jonghwan.typing.shared.security.member.Member;
+import com.jonghwan.typing.shared.security.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,27 +25,25 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TypingResultService {
-    private final AuthService authService;
+    private final MemberRepository memberRepository;
     private final TypingTextRepository typingTextRepository;
     private final TypingResultRepository typingResultRepository;
     private final ObjectMapper objectMapper;
 
     @Transactional
-    public PostResponse saveTypingResult(ResultSubmitRequest request) {
-        Member member = authService.getCurrentAuthenticatedUser();
-        TypingResult typingResult = requestToEntity(request, member);
+    public PostResponse saveTypingResult(LoginMember loginMember, ResultSubmitRequest request) {
+        TypingResult typingResult = requestToEntity(loginMember, request);
         typingResultRepository.save(typingResult);
         return PostResponse.of("Typing result has been saved", typingResult.getId());
     }
 
     @Transactional(readOnly = true)
-    public List<ResultFetchResponse> fetchMyTypingResults(int limit) {
+    public List<ResultFetchResponse> fetchMyTypingResults(LoginMember loginMember, int limit) {
         if (limit <= 0) {
             throw new BadRequestException("Limit must be greater than 0");
         }
 
-        Member member = authService.getCurrentAuthenticatedUser();
-        List<TypingResult> results = typingResultRepository.findByMemberIdOrderByCreatedAtDesc(member.getId());
+        List<TypingResult> results = typingResultRepository.findByMemberIdOrderByCreatedAtDesc(loginMember.id());
 
         return results.stream()
                 .limit(limit)
@@ -81,15 +81,16 @@ public class TypingResultService {
         }
     }
 
-    private TypingResult requestToEntity(ResultSubmitRequest request, Member member) {
-        TypingText typingText = typingTextRepository.findById(request.textId())
-                .orElseThrow(() -> new NotFoundException("No such TypingText id"));
+    private TypingResult requestToEntity(LoginMember loginMember, ResultSubmitRequest request) {
+        if(typingTextRepository.existsById(request.textId())) {
+            throw new NotFoundException("No such TypingText id");
+        }
         try {
             String matchPerCharJson = objectMapper.writeValueAsString(request.matchPerChar());
             String elapsedMsPerCharJson = objectMapper.writeValueAsString(request.elapsedMsPerChar());
             return TypingResult.builder()
-                    .member(member)
-                    .typingText(typingText)
+                    .memberId(loginMember.id())
+                    .textId(request.textId())
                     .accuracy(request.accuracy())
                     .actualAccuracy(request.actualAccuracy())
                     .matchPerCharJson(matchPerCharJson)

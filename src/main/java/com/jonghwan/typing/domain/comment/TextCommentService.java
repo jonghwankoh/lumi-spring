@@ -6,11 +6,14 @@ import com.jonghwan.typing.domain.typingtext.TypingText;
 import com.jonghwan.typing.domain.typingtext.TypingTextRepository;
 import com.jonghwan.typing.shared.base.dto.PostResponse;
 import com.jonghwan.typing.shared.base.dto.Response;
-import com.jonghwan.typing.shared.base.exception.ForbiddenException;
-import com.jonghwan.typing.shared.base.exception.NotFoundException;
+import com.jonghwan.typing.shared.exception.custom.ForbiddenException;
+import com.jonghwan.typing.shared.exception.custom.NotFoundException;
 import com.jonghwan.typing.shared.constant.RandomNumberProvider;
 import com.jonghwan.typing.shared.security.AuthService;
-import com.jonghwan.typing.shared.security.Member;
+import com.jonghwan.typing.shared.security.member.Login;
+import com.jonghwan.typing.shared.security.member.LoginMember;
+import com.jonghwan.typing.shared.security.member.Member;
+import com.jonghwan.typing.shared.security.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class TextCommentService {
-    private final AuthService authService;
+    private final MemberRepository memberRepository;
     private final TextCommentRepository repository;
     private final TypingTextRepository textRepository;
     private final RandomNumberProvider randomNumberProvider;
@@ -35,13 +38,12 @@ public class TextCommentService {
     }
 
     @Transactional
-    public PostResponse postTextComment(Long textId, TextCommentSubmitRequest request) {
-        Member member = authService.getCurrentAuthenticatedUser();
+    public PostResponse postTextComment(LoginMember loginMember, Long textId, TextCommentSubmitRequest request) {
         TypingText text = textRepository.findById(textId)
                 .orElseThrow(() -> new NotFoundException("text not found"));
         TextComment textComment = TextComment.builder()
                 .typingText(text)
-                .author(member)
+                .author(memberRepository.getReferenceById(loginMember.id()))
                 .content(request.content())
                 .build();
         repository.save(textComment);
@@ -50,13 +52,12 @@ public class TextCommentService {
     }
 
     @Transactional
-    public Response deleteTextComment(Long commentId) {
-        Member member = authService.getCurrentAuthenticatedUser();
+    public Response deleteTextComment(LoginMember loginMember, Long commentId) {
         TextComment textComment = repository.findById(commentId).orElse(null);
         if (textComment == null) {
             throw new NotFoundException("Comment not found.");
         }
-        if (!Objects.equals(textComment.getAuthor().getId(), member.getId())) {
+        if (!Objects.equals(textComment.getAuthor().getId(), loginMember.id())) {
             throw new ForbiddenException("You are not authorized to delete this comment.");
         }
 

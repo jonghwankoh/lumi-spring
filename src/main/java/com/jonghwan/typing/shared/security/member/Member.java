@@ -1,4 +1,4 @@
-package com.jonghwan.typing.shared.security;
+package com.jonghwan.typing.shared.security.member;
 
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -12,8 +12,8 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String username;
+    @Column(name = "user_key", nullable = false)
+    private String userKey;
 
     @Column(nullable = false)
     private String name;
@@ -25,18 +25,19 @@ public class Member extends BaseEntity {
     private String role;
 
     @Builder
-    public Member(String username, String name, String email, String role) {
-        this.username = username;
+    public Member(String userKey, String name, String email, String role) {
+        this.userKey = userKey;
         this.name = name;
         this.email = email;
         this.role = role;
     }
 
-    public void updateName(String name) {
-        this.name = name;
-    }
-
-    public void updateEmail(String email) {
-        this.email = email;
+    public void mergeUserInfo(String name, String email) {
+        if (!this.name.equals(name)) {
+            this.name = name;
+        }
+        if (!this.email.equals(email)) {
+            this.email = email;
+        }
     }
 }

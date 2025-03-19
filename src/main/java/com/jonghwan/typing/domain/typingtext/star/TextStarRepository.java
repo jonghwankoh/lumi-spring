@@ -1,6 +1,6 @@
 package com.jonghwan.typing.domain.typingtext.star;
 
-import com.jonghwan.typing.shared.security.Member;
+import com.jonghwan.typing.shared.security.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -1,6 +1,8 @@
 package com.jonghwan.typing.shared.security;
 
-import com.jonghwan.typing.shared.base.exception.UnauthorizedException;
+import com.jonghwan.typing.shared.exception.custom.UnauthorizedException;
+import com.jonghwan.typing.shared.security.member.Member;
+import com.jonghwan.typing.shared.security.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +20,7 @@ public class AuthService {
             throw new UnauthorizedException("Unauthorized access or invalid authentication.");
         }
 
-        return memberRepository.findByUsername(userDetails.getUsername())
+        return memberRepository.findById(Long.parseLong(userDetails.getUsername()))
                 .orElseThrow(() -> new UnauthorizedException("User not found for the given token"));
     }
 }

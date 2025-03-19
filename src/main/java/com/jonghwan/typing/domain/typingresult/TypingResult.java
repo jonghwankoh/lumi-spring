@@ -1,7 +1,7 @@
 package com.jonghwan.typing.domain.typingresult;
 
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
-import com.jonghwan.typing.shared.security.Member;
+import com.jonghwan.typing.shared.security.member.Member;
 import com.jonghwan.typing.domain.typingtext.TypingText;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,11 +14,17 @@ public class TypingResult extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", insertable = false, updatable = false)
     private Member member;
 
-    @ManyToOne
+    @Column(name = "text_id", nullable = false)
+    private TypingText textId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "text_id", nullable = false)
     private TypingText typingText;
 
@@ -41,9 +47,9 @@ public class TypingResult extends BaseEntity {
     private String elapsedMsPerCharJson;
 
     @Builder
-    public TypingResult(Member member, TypingText typingText, int accuracy, int actualAccuracy, int elapsedMs, int cpm, String matchPerCharJson, String elapsedMsPerCharJson) {
-        this.member = member;
-        this.typingText = typingText;
+    public TypingResult(Long memberId, Long textId, int accuracy, int actualAccuracy, int elapsedMs, int cpm, String matchPerCharJson, String elapsedMsPerCharJson) {
+        this.memberId = memberId;
+        this.textId = textId;
         this.accuracy = accuracy;
         this.actualAccuracy = actualAccuracy;
         this.elapsedMs = elapsedMs;

@@ -2,7 +2,7 @@ package com.jonghwan.typing.domain.comment.like;
 
 import com.jonghwan.typing.domain.comment.TextComment;
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
-import com.jonghwan.typing.shared.security.Member;
+import com.jonghwan.typing.shared.security.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 

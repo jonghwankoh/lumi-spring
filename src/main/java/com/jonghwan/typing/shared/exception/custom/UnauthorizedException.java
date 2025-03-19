@@ -1,4 +1,4 @@
-package com.jonghwan.typing.shared.base.exception;
+package com.jonghwan.typing.shared.exception.custom;
 
 public class UnauthorizedException extends RuntimeException {
     public UnauthorizedException(String message) {

@@ -1,6 +1,6 @@
 package com.jonghwan.typing.domain.typingtext;
 
-import com.jonghwan.typing.shared.security.Member;
+import com.jonghwan.typing.shared.security.member.Member;
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

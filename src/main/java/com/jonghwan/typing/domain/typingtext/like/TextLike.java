@@ -1,7 +1,7 @@
 package com.jonghwan.typing.domain.typingtext.like;
 
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
-import com.jonghwan.typing.shared.security.Member;
+import com.jonghwan.typing.shared.security.member.Member;
 import com.jonghwan.typing.domain.typingtext.TypingText;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

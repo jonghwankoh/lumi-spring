@@ -5,7 +5,7 @@ import com.jonghwan.typing.domain.comment.dto.TextCommentFetchResponse;
 import com.jonghwan.typing.domain.typingtext.dto.TypingTextFetchResponse;
 import com.jonghwan.typing.domain.typingtext.like.TextLikeRepository;
 import com.jonghwan.typing.domain.typingtext.star.TextStarRepository;
-import com.jonghwan.typing.shared.base.exception.NotFoundException;
+import com.jonghwan.typing.shared.exception.custom.NotFoundException;
 import com.jonghwan.typing.shared.constant.RandomNumberProvider;
 import com.jonghwan.typing.shared.security.AuthService;
 import lombok.RequiredArgsConstructor;

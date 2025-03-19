@@ -1,4 +1,4 @@
-package com.jonghwan.typing.shared.security.dto;
+package com.jonghwan.typing.shared.security.dto.oatuh2.response;
 
 import java.util.Map;
 
@@ -10,12 +10,12 @@ public class GoogleResponse implements OAuth2Response{
     }
 
     @Override
-    public String getProvider() {
+    public String getProviderType() {
         return "google";
     }
 
     @Override
-    public String getProviderId() {
+    public String getProviderSubject() {
         return attribute.get("sub").toString();
     }
 

@@ -1,10 +1,10 @@
-package com.jonghwan.typing.shared.security.handler;
+package com.jonghwan.typing.shared.exception;
 
 import com.jonghwan.typing.shared.base.dto.Response;
-import com.jonghwan.typing.shared.base.exception.BadRequestException;
-import com.jonghwan.typing.shared.base.exception.ForbiddenException;
-import com.jonghwan.typing.shared.base.exception.NotFoundException;
-import com.jonghwan.typing.shared.base.exception.UnauthorizedException;
+import com.jonghwan.typing.shared.exception.custom.BadRequestException;
+import com.jonghwan.typing.shared.exception.custom.ForbiddenException;
+import com.jonghwan.typing.shared.exception.custom.NotFoundException;
+import com.jonghwan.typing.shared.exception.custom.UnauthorizedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
