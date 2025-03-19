@@ -21,7 +21,6 @@ import java.util.Objects;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class TextCommentService {
     private final AuthService authService;
@@ -35,6 +34,7 @@ public class TextCommentService {
                 .toList();
     }
 
+    @Transactional
     public PostResponse postTextComment(Long textId, TextCommentSubmitRequest request) {
         Member member = authService.getCurrentAuthenticatedUser();
         TypingText text = textRepository.findById(textId)
@@ -49,6 +49,7 @@ public class TextCommentService {
         return PostResponse.of("Comment has been saved", textComment.getId());
     }
 
+    @Transactional
     public Response deleteTextComment(Long commentId) {
         Member member = authService.getCurrentAuthenticatedUser();
         TextComment textComment = repository.findById(commentId).orElse(null);

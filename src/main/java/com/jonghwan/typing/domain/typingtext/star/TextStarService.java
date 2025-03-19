@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class TextStarService {
     private final AuthService authService;
     private final TypingTextRepository textRepository;
     private final TextStarRepository starRepository;
 
+    @Transactional
     public PostResponse addStar(Long textId) {
         Member member = authService.getCurrentAuthenticatedUser();
         TypingText typingText = textRepository.findById(textId)
@@ -38,6 +38,7 @@ public class TextStarService {
         return PostResponse.of("Star saved", star.getId());
     }
 
+    @Transactional
     public Response unstarText(Long textId) {
         Member member = authService.getCurrentAuthenticatedUser();
 

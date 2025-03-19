@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class TextLikeService {
     private final AuthService authService;
     private final TypingTextRepository textRepository;
     private final TextLikeRepository likeRepository;
 
+    @Transactional
     public PostResponse addLike(Long textId) {
         Member member = authService.getCurrentAuthenticatedUser();
         TypingText typingText = textRepository.findById(textId)
@@ -39,6 +39,7 @@ public class TextLikeService {
         return PostResponse.of("Like saved", like.getId());
     }
 
+    @Transactional
     public Response unlikeText(Long textId) {
         Member member = authService.getCurrentAuthenticatedUser();
 

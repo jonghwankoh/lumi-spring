@@ -6,6 +6,7 @@ import com.jonghwan.typing.domain.typingtext.dto.TypingTextFetchResponse;
 import com.jonghwan.typing.domain.typingtext.like.TextLikeRepository;
 import com.jonghwan.typing.domain.typingtext.star.TextStarRepository;
 import com.jonghwan.typing.shared.base.exception.NotFoundException;
+import com.jonghwan.typing.shared.constant.RandomNumberProvider;
 import com.jonghwan.typing.shared.security.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class TypingTextService {
     private final AuthService authService;
@@ -23,8 +23,9 @@ public class TypingTextService {
     private final TextStarRepository starRepository;
     private final TextCommentRepository commentRepository;
 
-    private final int randomNumber = (int) (Math.random() * 200);
+    private final RandomNumberProvider randomNumberProvider;
 
+    @Transactional(readOnly = true)
     public TypingTextFetchResponse getTypingText(Long textId, boolean fullDetails) {
         TypingText text = typingTextRepository.findById(textId)
                 .orElseThrow(() -> new NotFoundException("Text not found"));
@@ -47,7 +48,7 @@ public class TypingTextService {
                         .content(c.getContent())
                         .authorId(c.getAuthor().getId())
                         .authorName(c.getAuthor().getName())
-                        .authorImg("https://picsum.photos/id/" + ((c.getAuthor().getId() + randomNumber) % 200) + "/200/300")
+                        .authorImg("https://picsum.photos/id/" + ((c.getAuthor().getId() + randomNumberProvider.getRandomNumber()) % 200) + "/200/300")
                         .likeCount(0L) // TODO: CommentLike
                         .isLiked(false) // TODO: CommentLike
                         .build()).toList();
@@ -64,6 +65,7 @@ public class TypingTextService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     public TypingTextFetchResponse getRandomText() {
         TypingText text = typingTextRepository.findAny()
                 .orElseThrow(()-> new NotFoundException("text not found"));
