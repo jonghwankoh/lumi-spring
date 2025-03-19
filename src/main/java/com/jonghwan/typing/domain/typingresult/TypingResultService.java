@@ -61,8 +61,8 @@ public class TypingResultService {
 
     private ResultFetchResponse entityToResponse(TypingResult typingResult) {
         try {
-            List<Boolean> matchPerChar = objectMapper.readValue(typingResult.getMatchPerCharJson(), new TypeReference<List<Boolean>>() {});
-            List<Integer> elapsedMsPerChar = objectMapper.readValue(typingResult.getElapsedMsPerCharJson(), new TypeReference<List<Integer>>() {});
+            List<Boolean> matchPerChar = objectMapper.readValue(typingResult.getMatchPerCharJson(), new TypeReference<>() {});
+            List<Integer> elapsedMsPerChar = objectMapper.readValue(typingResult.getElapsedMsPerCharJson(), new TypeReference<>() {});
 
             return ResultFetchResponse.builder()
                     .id(typingResult.getId())
