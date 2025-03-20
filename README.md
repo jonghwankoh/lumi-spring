@@ -6,6 +6,7 @@ SPRING_PROFILES_ACTIVE=dev  # 활성화할 Spring 프로파일
 DATABASE_URL=jdbc:mysql://localhost:3306/lumi  # 데이터베이스 연결 URL
 DATABASE_USER=root  # 데이터베이스 사용자명
 DATABASE_PASSWORD=0000  # 데이터베이스 비밀번호
+OAUTH2_GOOGLE_CLIENT_SECRET={google oauth2 client secret} # OAuth2 클라이언트 비밀번호
 ADMIN_EMAIL=admin@example.com  # 관리자 이메일
 ```
 
