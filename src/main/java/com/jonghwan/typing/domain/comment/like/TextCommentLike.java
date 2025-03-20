@@ -14,17 +14,23 @@ public class TextCommentLike extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @Column(name="member_id", nullable = false)
+    private Long memberId;
 
     @ManyToOne
-    @JoinColumn(name = "comment_id", nullable = false)
+    @JoinColumn(name = "member_id", insertable = false, updatable = false)
+    private Member member;
+
+    @Column(name="comment_id", nullable = false)
+    private Long textCommentId;
+
+    @ManyToOne
+    @JoinColumn(name = "comment_id", insertable = false, updatable = false)
     private TextComment textComment;
 
     @Builder
-    public TextCommentLike(Member member, TextComment textComment) {
-        this.member = member;
-        this.textComment = textComment;
+    public TextCommentLike(Long memberId, Long textCommentId) {
+        this.memberId = memberId;
+        this.textCommentId = textCommentId;
     }
 }

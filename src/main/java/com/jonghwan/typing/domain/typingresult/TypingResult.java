@@ -22,10 +22,10 @@ public class TypingResult extends BaseEntity {
     private Member member;
 
     @Column(name = "text_id", nullable = false)
-    private TypingText textId;
+    private Long textId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "text_id", nullable = false)
+    @JoinColumn(name = "text_id", insertable = false, updatable = false)
     private TypingText typingText;
 
     @Column(nullable = false)

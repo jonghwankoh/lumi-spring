@@ -1,10 +1,7 @@
 package com.jonghwan.typing.shared.security.member;
 
 import com.jonghwan.typing.shared.exception.custom.ForbiddenException;
-import com.jonghwan.typing.shared.exception.custom.UnauthorizedException;
-import com.jonghwan.typing.shared.security.jwt.JWTUtil;
 import com.jonghwan.typing.shared.security.jwt.JwtUserDetails;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
@@ -38,6 +35,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 
         return LoginMember.builder()
                 .id(Long.parseLong(userDetails.getUsername()))
-                .role(userDetails.getAuthorities().iterator().next().getAuthority());
+                .role(userDetails.getAuthorities().iterator().next().getAuthority())
+                .build();
     }
 }

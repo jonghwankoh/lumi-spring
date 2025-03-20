@@ -19,17 +19,21 @@ public class TextStar extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
     @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id", insertable = false, updatable = false)
     private Member member;
 
+    @Column(name = "text_id", nullable = false)
+    private Long textId;
     @ManyToOne
-    @JoinColumn(name = "text_id", nullable = false)
+    @JoinColumn(name = "text_id", insertable = false, updatable = false)
     private TypingText typingText;
 
     @Builder
-    public TextStar(Member member, TypingText typingText) {
-        this.member = member;
-        this.typingText = typingText;
+    public TextStar(Long memberId, Long textId) {
+        this.memberId = memberId;
+        this.textId = textId;
     }
 }

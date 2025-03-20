@@ -5,14 +5,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jonghwan.typing.domain.typingresult.dto.ResultFetchResponse;
 import com.jonghwan.typing.domain.typingresult.dto.ResultSubmitRequest;
-import com.jonghwan.typing.domain.typingtext.TypingText;
 import com.jonghwan.typing.domain.typingtext.TypingTextRepository;
 import com.jonghwan.typing.shared.base.dto.PostResponse;
 import com.jonghwan.typing.shared.exception.custom.BadRequestException;
 import com.jonghwan.typing.shared.exception.custom.NotFoundException;
-import com.jonghwan.typing.shared.security.AuthService;
 import com.jonghwan.typing.shared.security.member.LoginMember;
-import com.jonghwan.typing.shared.security.member.Member;
 import com.jonghwan.typing.shared.security.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +63,7 @@ public class TypingResultService {
 
             return ResultFetchResponse.builder()
                     .id(typingResult.getId())
-                    .textId(typingResult.getTypingText().getId())
+                    .textId(typingResult.getTextId())
                     .title(typingResult.getTypingText().getTitle())
                     .accuracy(typingResult.getAccuracy())
                     .actualAccuracy(typingResult.getActualAccuracy())
@@ -82,7 +79,7 @@ public class TypingResultService {
     }
 
     private TypingResult requestToEntity(LoginMember loginMember, ResultSubmitRequest request) {
-        if(typingTextRepository.existsById(request.textId())) {
+        if(!typingTextRepository.existsById(request.textId())) {
             throw new NotFoundException("No such TypingText id");
         }
         try {

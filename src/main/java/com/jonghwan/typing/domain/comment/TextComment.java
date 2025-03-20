@@ -14,21 +14,25 @@ public class TextComment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name="member_id", nullable = false)
+    private Long memberId;
     @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member author;
+    @JoinColumn(name = "member_id", insertable = false, updatable = false)
+    private Member member;
 
+    @Column(name="text_id", nullable = false)
+    private Long textId;
     @ManyToOne
-    @JoinColumn(name = "text_id", nullable = false)
+    @JoinColumn(name = "text_id", insertable = false, updatable = false)
     private TypingText typingText;
 
     @Column(nullable = false)
     private String content;
 
     @Builder
-    public TextComment(Member author, TypingText typingText, String content) {
-        this.author = author;
-        this.typingText = typingText;
+    public TextComment(Long memberId, Long textId, String content) {
+        this.memberId = memberId;
+        this.textId = textId;
         this.content = content;
     }
 }

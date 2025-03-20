@@ -2,17 +2,13 @@ package com.jonghwan.typing.domain.comment;
 
 import com.jonghwan.typing.domain.comment.dto.TextCommentFetchResponse;
 import com.jonghwan.typing.domain.comment.dto.TextCommentSubmitRequest;
-import com.jonghwan.typing.domain.typingtext.TypingText;
 import com.jonghwan.typing.domain.typingtext.TypingTextRepository;
 import com.jonghwan.typing.shared.base.dto.PostResponse;
 import com.jonghwan.typing.shared.base.dto.Response;
 import com.jonghwan.typing.shared.exception.custom.ForbiddenException;
 import com.jonghwan.typing.shared.exception.custom.NotFoundException;
 import com.jonghwan.typing.shared.constant.RandomNumberProvider;
-import com.jonghwan.typing.shared.security.AuthService;
-import com.jonghwan.typing.shared.security.member.Login;
 import com.jonghwan.typing.shared.security.member.LoginMember;
-import com.jonghwan.typing.shared.security.member.Member;
 import com.jonghwan.typing.shared.security.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,11 +35,12 @@ public class TextCommentService {
 
     @Transactional
     public PostResponse postTextComment(LoginMember loginMember, Long textId, TextCommentSubmitRequest request) {
-        TypingText text = textRepository.findById(textId)
-                .orElseThrow(() -> new NotFoundException("text not found"));
+        if(!textRepository.existsById(textId)){
+            throw new NotFoundException("text not found");
+        }
         TextComment textComment = TextComment.builder()
-                .typingText(text)
-                .author(memberRepository.getReferenceById(loginMember.id()))
+                .textId(textId)
+                .memberId(loginMember.id())
                 .content(request.content())
                 .build();
         repository.save(textComment);
@@ -57,7 +54,7 @@ public class TextCommentService {
         if (textComment == null) {
             throw new NotFoundException("Comment not found.");
         }
-        if (!Objects.equals(textComment.getAuthor().getId(), loginMember.id())) {
+        if (!Objects.equals(textComment.getMemberId(), loginMember.id())) {
             throw new ForbiddenException("You are not authorized to delete this comment.");
         }
 
@@ -71,9 +68,9 @@ public class TextCommentService {
                 .likeCount(0L) // TODO: TextCommentLike
                 .isLiked(false) // TODO: TextCommentLike
                 // TODO: author Image
-                .authorImg("https://picsum.photos/id/" + ((textComment.getAuthor().getId() + randomNumberProvider.getRandomNumber()) % 200) + "/200/300")
-                .authorId(textComment.getAuthor().getId())
-                .authorName(textComment.getAuthor().getName())
+                .authorImg("https://picsum.photos/id/" + ((textComment.getMemberId() + randomNumberProvider.getRandomNumber()) % 200) + "/200/300")
+                .authorId(textComment.getMemberId() )
+                .authorName(textComment.getMember().getName())
                 .content(textComment.getContent())
                 .createdAt(textComment.getCreatedAt())
                 .build();

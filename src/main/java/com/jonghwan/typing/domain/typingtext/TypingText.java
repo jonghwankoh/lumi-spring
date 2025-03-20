@@ -24,18 +24,17 @@ public class TypingText extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id")
+    @Column(name="author_id")
+    private Long authorId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", insertable = false, updatable = false)
     private Member author;
 
-    public Long getAuthorId() {
-        return author != null ? author.getId() : null;
-    }
-
     @Builder
-    public TypingText(String title, String content, Member author) {
+    public TypingText(String title, String content, Long authorId) {
         this.title = title;
         this.content = content;
-        this.author = author;
+        this.authorId = authorId;
     }
 }
