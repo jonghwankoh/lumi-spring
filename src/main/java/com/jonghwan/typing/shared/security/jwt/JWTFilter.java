@@ -50,7 +50,7 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     private void setAuthToken(String token) {
-        JwtUserDetails userDetails = new JwtUserDetails(jwtUtil.getUsername(token), jwtUtil.getRole(token));
+        JwtUserDetails userDetails = new JwtUserDetails(jwtUtil.getMemberId(token), jwtUtil.getRole(token));
 
         Authentication authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);

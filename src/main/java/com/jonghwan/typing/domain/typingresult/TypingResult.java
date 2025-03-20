@@ -1,26 +1,31 @@
 package com.jonghwan.typing.domain.typingresult;
 
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
-import com.jonghwan.typing.shared.security.Member;
+import com.jonghwan.typing.shared.security.member.Member;
 import com.jonghwan.typing.domain.typingtext.TypingText;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TypingResult extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", insertable = false, updatable = false)
     private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "text_id", nullable = false)
+    @Column(name = "text_id", nullable = false)
+    private Long textId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "text_id", insertable = false, updatable = false)
     private TypingText typingText;
 
     @Column(nullable = false)
@@ -35,9 +40,21 @@ public class TypingResult extends BaseEntity {
     @Column(nullable = false)
     private int cpm;
 
-    @Column(columnDefinition = "json", nullable = false)
-    private String matchPerChar;
+    @Column(name = "match_per_char", columnDefinition = "json", nullable = false)
+    private String matchPerCharJson;
 
-    @Column(columnDefinition = "json", nullable = false)
-    private String elapsedMsPerChar;
+    @Column(name = "elapsed_ms_per_char", columnDefinition = "json", nullable = false)
+    private String elapsedMsPerCharJson;
+
+    @Builder
+    public TypingResult(Long memberId, Long textId, int accuracy, int actualAccuracy, int elapsedMs, int cpm, String matchPerCharJson, String elapsedMsPerCharJson) {
+        this.memberId = memberId;
+        this.textId = textId;
+        this.accuracy = accuracy;
+        this.actualAccuracy = actualAccuracy;
+        this.elapsedMs = elapsedMs;
+        this.cpm = cpm;
+        this.matchPerCharJson = matchPerCharJson;
+        this.elapsedMsPerCharJson = elapsedMsPerCharJson;
+    }
 }

@@ -1,10 +1,10 @@
-package com.jonghwan.typing.domain.my;
+package com.jonghwan.typing.shared.security.member;
 
 import lombok.Builder;
 
 @Builder
-public record MyDTO(
-        Long memberId,
+public record LoginMember(
+        Long id,
         String name,
         String email,
         String role

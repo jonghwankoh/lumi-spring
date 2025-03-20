@@ -1,6 +1,8 @@
 package com.jonghwan.typing.shared.security;
 
 import com.jonghwan.typing.shared.security.jwt.JWTUtil;
+import com.jonghwan.typing.shared.security.member.Member;
+import com.jonghwan.typing.shared.security.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,23 +26,20 @@ public class AdminTokenPrinter implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        String adminUsername = "admin";
+        String adminUserKey = "admin";
         String adminRole = "ROLE_ADMIN";
         String adminName = "admin";
 
-        Optional<Member> findMember = memberRepository.findByUsername("admin");
+        Optional<Member> findMember = memberRepository.findByUserKey(adminUserKey);
 
-        Member updateMember;
-        if (findMember.isEmpty()) {
-            // admin 등록
-            updateMember = new Member();
-            updateMember.setUsername(adminUsername);
-            updateMember.setRole(adminRole);
-            updateMember.setName(adminName);
-            updateMember.setEmail(adminEmail);
-            memberRepository.save(updateMember);
-        }
-        String adminToken = jwtUtil.createJwt(adminUsername, adminRole, 1000L*3600*24);
+        Member adminEntity;
+        adminEntity = findMember.orElseGet(() -> memberRepository.save(Member.builder()
+                .userKey(adminUserKey)
+                .role(adminRole)
+                .name(adminName)
+                .email(adminEmail)
+                .build()));
+        String adminToken = jwtUtil.createJwt(adminEntity.getId().toString(), adminRole, 1000L*3600*24);
         log.info("""
                 
                 ====================

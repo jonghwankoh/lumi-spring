@@ -1,6 +1,6 @@
-package com.jonghwan.typing.shared.security.oauth2;
+package com.jonghwan.typing.shared.security.handler.oauth2;
 
-import com.jonghwan.typing.shared.security.dto.CustomOAuth2User;
+import com.jonghwan.typing.shared.security.dto.oatuh2.LoadedOAuth2User;
 import com.jonghwan.typing.shared.security.jwt.JWTUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -13,25 +13,25 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JWTUtil jwtUtil;
 
-    public CustomSuccessHandler(JWTUtil jwtUtil) {
+    public OAuth2LoginSuccessHandler(JWTUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        CustomOAuth2User userDetails = (CustomOAuth2User) authentication.getPrincipal();
+        LoadedOAuth2User userDetails = (LoadedOAuth2User) authentication.getPrincipal();
 
-        String username = userDetails.getUsername();
+        String memberId = userDetails.getMemberId().toString();
         String role = userDetails.getAuthorities().iterator().next().getAuthority();
 
-        String token = jwtUtil.createJwt(username, role, 60*60*1000L);
+        String token = jwtUtil.createJwt(memberId, role, 60*60*1000L);
         Cookie jwtCookie = createJwtCookie(token);
 
         response.addCookie(jwtCookie);
-        response.sendRedirect("http://localhost:5173/success?status=success&username=" + userDetails.getUsername());
+        response.sendRedirect("http://localhost:5173/success?status=success");
     }
 
     private Cookie createJwtCookie(String token) {

@@ -8,13 +8,11 @@ import java.util.Collection;
 import java.util.List;
 
 public class JwtUserDetails implements UserDetails {
-    private final String username;
-    private final String role;
+    private final String memberId;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUserDetails(String username, String role) {
-        this.username = username;
-        this.role = role;
+    public JwtUserDetails(String memberId, String role) {
+        this.memberId = memberId;
         this.authorities = List.of(new SimpleGrantedAuthority(role));
     }
 
@@ -30,7 +28,7 @@ public class JwtUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return memberId;
     }
 
     @Override

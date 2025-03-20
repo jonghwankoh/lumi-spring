@@ -1,14 +1,13 @@
 package com.jonghwan.typing.domain.sentence;
 
 import com.jonghwan.typing.shared.base.entity.BaseEntity;
-import com.jonghwan.typing.shared.security.Member;
+import com.jonghwan.typing.shared.security.member.Member;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MySentence extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +20,10 @@ public class MySentence extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "meaning_id", nullable = false)
     private SentenceMeaning meaning;
+
+    @Builder
+    public MySentence(Member member, SentenceMeaning meaning) {
+        this.member = member;
+        this.meaning = meaning;
+    }
 }
