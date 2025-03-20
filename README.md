@@ -1,7 +1,7 @@
 ## .env 파일 구성
 
 ```properties
-JWT_SECRET=dx2pYLmv5IOeOWd6LXcvKkwatBY+8ld/TwsjBvwHb8g=  # JWT 서명을 위한 비밀 키
+JWT_SECRET={256bit key(base64)}  # JWT 서명을 위한 비밀 키
 SPRING_PROFILES_ACTIVE=dev  # 활성화할 Spring 프로파일
 DATABASE_URL=jdbc:mysql://localhost:3306/lumi  # 데이터베이스 연결 URL
 DATABASE_USER=root  # 데이터베이스 사용자명
