@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MyController {
     @GetMapping
-    public MyDTO getMy(@Login LoginMember loginMember) {
-        return MyDTO.builder()
+    public MyInfoRequest getMy(@Login LoginMember loginMember) {
+        return MyInfoRequest.builder()
                 .memberId(loginMember.id())
                 .name(loginMember.name())
                 .email(loginMember.email())
